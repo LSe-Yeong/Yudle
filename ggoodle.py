@@ -4,19 +4,55 @@ from unicode import join_jamos
 import pandas as pd
 import re
 from pydantic import BaseModel
+import random
 
 #uvicorn ggoodle:app --reload --host=0.0.0.0 --port=8800
 
 app=FastAPI()
     
+today_num=0
+
 class Item(BaseModel):
     word: str
     result: str 
     strList: list
 
+class validWord(BaseModel):
+    validWord: list
+
+    
 @app.get("/api/hello")
 async def Hello():
     return "hello,world"
+
+@app.post("/api/validation")
+async def word_validation(word: validWord):
+    valid_word=word.validWord
+    isValid=False
+    print(valid_word)
+    for word in first_str_word:
+        if(isValid):
+            break
+        isValid=True
+        for j in range(0,6):
+            if word[j]!=valid_word[j]:
+                isValid=False
+                break
+    print(isValid)
+    return isValid
+
+@app.get("/api/change/number")
+async def change_num():
+    str_jamo_list=find_hangle_list()
+    today_num=random.randint(0,len(str_jamo_list)-1)
+    print(today_num)
+    return ;
+    
+@app.get("/api/todayWord")
+async def today_word():
+    today_num=521
+    print(today_num)
+    return first_str_word[today_num]
 
 @app.get("/api/wordList")
 async def getWordList():
@@ -112,6 +148,7 @@ def Test(my_jamoText,target_jamoText,result_set):
     result_set.append(result)
     return
 
+first_str_word = find_hangle_list()
 # str_jamo_list=find_hangle_list()
 
 # while(True):
