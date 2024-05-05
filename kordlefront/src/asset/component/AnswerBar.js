@@ -33,8 +33,6 @@ function AnswerBar(props){
     };
 
     const isdisabled=Number(props.id)!=(props.count) ? true : false; 
-    const [isValid,setIsValid] = useState(true);
-    const [isEnd,setIsEnd] = useState(false);
     
     const dispatch=useDispatch();
     const data=useSelector(state=>state.data);
@@ -53,108 +51,13 @@ function AnswerBar(props){
         console.log("다참 ㅋㅋㅋㅋ");
     }
 
-    // useEffect(() => {
-    //     if(!isValid){
-    //         for(let i=0;i<6;i++){
-    //             inputs[i].style.color='red';
-    //         }
-    //     }
-        // else{
-        //     for(let i=0;i<6;i++){
-        //         if(inputs[i].value!=""){
-        //             inputs[i].style.color='black';
-        //         }
-        //     }
-        // }
-    //     console.log(isValid);
-    // }, [isValid]);
-
-    // useEffect(() => {
-    //     inputs = document.querySelectorAll('input[name^="input"]');
-    //     if(!(data.userWord.includes(""))){
-    //         setIsEnd(true);
-    //         // const valid_data={"validWord": data.userWord};
-    //         // getValidation(valid_data).then((data)=>{
-    //         //     console.log(data);
-    //         //     setIsValid(data);
-    //         //     console.log(isValid);
-    //         // });
-    //     }
-    //     else{
-    //         for(let i=0;i<6;i++){
-    //             if(inputs[i].value!=""){
-    //                 inputs[i].style.color='black';
-    //             }
-    //         }
-    //         // setIsValid(true);
-    //     }
-    // }, [data.userWord]);
-
-    async function handleDispatch(event) {
-        try {
-          await dispatch(insertItem([event.target.name, event.target.value]));
-          console.log(data.userWord);
-          return Promise.resolve(); // 비동기 작업이 완료될 때 Promise 반환
-        } catch (error) {
-          console.error('Error:', error);
-          return Promise.reject(error);
-        }
-    }
-
     function wordChangeHandler(event){
         for(let i=(props.count-1)*6;i<(props.count-1)*6+6;i++){
             inputs[i].style.color = 'black';
         }     
-        // for(let i=0;i<6;i++){
-        //     inputs[i].style.color='black'; 
-        // }
-        // console.log(event.target.value);
+
         dispatch(insertItem([event.target.name,event.target.value]));
         console.log(data.userWord);
-
-
-        // console.log(data.userWord);
-        // inputs = document.querySelectorAll('input[name^="input"]');
-        // var elements=[];
-        // var word=[];
-
-        // for(let i=0;i<6;i++){
-        //     inputs[i].style.transition = "color 0.2s ease"
-        //     inputs[i].style.color='black';
-        // }
-
-        // for(let i=(props.count-1)*6;i<(props.count-1)*6+6;i++){
-        //     elements.push(inputs[i])
-        //     word.push(inputs[i].value)
-        // }
-        // dispatch(setUserWord(word))
-        // console.log(data.userWord);
-
-        // if(!(data.userWord.includes(""))){
-        //     const valid_data={"validWord": word};
-        //     getValidation(valid_data).then((data)=>{
-        //         console.log(data);
-        //         setIsValid(data);
-        //         console.log(isValid);
-        //     });
-        // }
-        
-        // for(let i=0;i<6;i++){
-        //     if(inputs[i].value==""){
-        //         return null;
-        //     }
-        // }
-
-        //유효성 검사 요청
-        // const valid_data={"validWord": valid_word};
-        // console.log(getValidation(valid_data))
-        // getValidation(valid_data).then((data)=>{
-        //     console.log(data);
-        //     setIsValid(data);
-        //     console.log(isValid);
-        // });
-        
-        // console.log(elements)
     }
 
     return(

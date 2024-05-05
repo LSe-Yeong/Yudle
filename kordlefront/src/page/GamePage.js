@@ -88,6 +88,7 @@ function GamePage(){
                             return null;
                         }
                     }
+                    
                     const valid_data={"validWord": userWord};
                     getValidation(valid_data)
                     .then((data) => {
@@ -126,37 +127,7 @@ function GamePage(){
                             alert("유효하지 않습니다.")
                             return null;
                         } // 비동기 작업이 완료된 후에 실행됩니다.
-                    });
-
-                    
-                    // for(let i=0;i<6;i++){
-                    //     console.log(userWord[i]==todayWord[i])
-                    //     if(userWord[i]==todayWord[i]){
-                    //         elements[i].style.color = "white"
-                    //         elements[i].style.transition = "background-color 0.7s ease"
-                    //         elements[i].style.backgroundColor ='green';
-                    //         greenCount=greenCount+1;
-                    //     }
-                    //     else if(todayWord.includes(elements[i].value)){
-                    //         elements[i].style.color = "white"
-                    //         elements[i].style.transition = "background-color 0.7s ease"
-                    //         elements[i].style.backgroundColor = '#FFA500';
-                    //     }
-                    //     else{
-                    //         elements[i].style.color = "white"
-                    //         elements[i].style.transition = "background-color 0.7s ease"
-                    //         elements[i].style.backgroundColor = 'gray';
-                    //     }
-                    // }
-                    // console.log(greenCount)
-                    // if(greenCount==6){
-                    //     setCount(-1);
-                    // }
-                    // else{
-                    //     setCount(count+1)
-                    //     console.log(count)
-                    // }
-                    
+                    });         
                 }}>입력</button>
             </div>
         </div>
