@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import {getValidation} from "../../api/PostApi";
 import { useDispatch, useSelector } from 'react-redux';
-import { insertItem, setUserWord } from "../../store/dataslice";
+import { insertItem, setUserWord, setRunning } from "../../store/dataslice";
 
 function AnswerBar(props){
 
@@ -55,7 +55,7 @@ function AnswerBar(props){
         for(let i=(props.count-1)*6;i<(props.count-1)*6+6;i++){
             inputs[i].style.color = 'black';
         }     
-
+        dispatch(setRunning(true))
         dispatch(insertItem([event.target.name,event.target.value]));
         console.log(data.userWord);
     }

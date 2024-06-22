@@ -12,7 +12,9 @@ const initialState = {
     word: "",
     result : "",
     strList : [],
-    recommend_word: []
+    recommend_word: [],
+    isRunning : false,
+    second: 0
 }
 
 const dataSlice = createSlice({
@@ -58,12 +60,17 @@ const dataSlice = createSlice({
         changeUserName: (state,action)=>{
             console.log(action);
             state.userName=action.payload;
+        },
+        setRunning: (state,action)=>{
+            state.isRunning=action.payload;
+        },
+        setSecond: (state,action)=>{
+            state.second=action.payload;
         }
-        
         //함수 작성
     }
 });
 
 
 export default dataSlice;
-export const {insertItem, setUserWord, clearUserWord, setFirstStrList, clearWord, addWord,clearResult,addResult,changeStrList,setRecommendWord,changeUserName } = dataSlice.actions; // 괄호 안 함수 작성
+export const {insertItem, setUserWord, clearUserWord, setFirstStrList, clearWord, addWord,clearResult,addResult,changeStrList,setRecommendWord,changeUserName ,setRunning,  setSecond } = dataSlice.actions; // 괄호 안 함수 작성

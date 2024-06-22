@@ -5,7 +5,8 @@ import "../asset/component/background.css"
 import {getTodayWord, getChangeNum, getValidation} from "../api/PostApi";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUserWord } from "../store/dataslice";
+import { clearUserWord, setRunning } from "../store/dataslice";
+import Timer from "../asset/component/Timer";
 
 const buttonStyle={
     backgroundColor: '#4CAF50',
@@ -30,7 +31,6 @@ function GamePage(){
     const [hover,setHover]=useState(false);
     const [count,setCount]=useState(1); //사용자 시도 횟수
     const [todayWord,setTodayWord]=useState([]);
-    // const [isValid,setIsValid] = useState(false);
 
     const isdisabled=(count) >6 || count==-1 ? true : false; 
     var isValid;
@@ -63,6 +63,7 @@ function GamePage(){
         <div className="backGround">
             <div>
                 <Maker></Maker>
+                <Timer></Timer>
             </div>
             <div>
                 <AnswerBar id="1" count={count}></AnswerBar>
@@ -88,7 +89,7 @@ function GamePage(){
                             return null;
                         }
                     }
-                    
+
                     const valid_data={"validWord": userWord};
                     getValidation(valid_data)
                     .then((data) => {
@@ -116,6 +117,7 @@ function GamePage(){
                             console.log(greenCount)
                             if(greenCount==6){
                                 setCount(-1);
+                                dispatch(setRunning(false))
                             }
                             else{
                                 setCount(count+1)
