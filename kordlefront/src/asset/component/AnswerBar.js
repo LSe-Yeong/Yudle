@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import {getValidation} from "../../api/PostApi";
 import { useDispatch, useSelector } from 'react-redux';
 import { insertItem, setUserWord, setRunning } from "../../store/dataslice";
+import Cookies from "js-cookie";
 
 function AnswerBar(props){
 
@@ -32,32 +33,35 @@ function AnswerBar(props){
         alignItems: 'center',
     };
 
-    const isdisabled=Number(props.id)!=(props.count) ? true : false; 
+    const id=Number(props.id)
+    const count = props.count
+    const isdisabled = id != count ? true : false; 
     
     const dispatch=useDispatch();
     const data=useSelector(state=>state.data);
 
-
-    if(!(data.userWord.includes("")) && Number(props.id)==props.count){
-        const valid_data={"validWord": data.userWord};
-        getValidation(valid_data).then((data)=>{
-            console.log(data);
-            if(!data){
-                for(let i=(props.count-1)*6;i<(props.count-1)*6+6;i++){
-                    inputs[i].style.color = 'red';
-                }                
-            }
-        })
-        console.log("다참 ㅋㅋㅋㅋ");
-    }
+    // 유효성 검사 코드 보류
+    // const userAnswer=data.userWord
+    // if(!(userAnswer.includes("")) && !isdisabled){  //단어 유효성 검사
+    //     const valid_data={"validWord": userAnswer};
+    //     getValidation(valid_data).then((data)=>{
+    //         console.log(data);
+    //         if(!data){
+    //             for(let i=(props.count-1)*6;i<(props.count-1)*6+6;i++){
+    //                 inputs[i].style.color = 'red';
+    //             }                
+    //         }
+    //     })
+    //     console.log("다참 ㅋㅋㅋㅋ");
+    // }
 
     function wordChangeHandler(event){
-        for(let i=(props.count-1)*6;i<(props.count-1)*6+6;i++){
-            inputs[i].style.color = 'black';
-        }     
+        Cookies.set("isover","run")
+        // for(let i=(props.count-1)*6;i<(props.count-1)*6+6;i++){
+        //     inputs[i].style.color = 'black';
+        // }     
         dispatch(setRunning(true))
-        dispatch(insertItem([event.target.name,event.target.value]));
-        console.log(data.userWord);
+        // dispatch(insertItem([event.target.name,event.target.value]));
     }
 
     return(

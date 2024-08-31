@@ -8,7 +8,8 @@ import axios from "axios";
 
 const initialState = {
     userName: "김철수",
-    userWord: ["","","","","",""],
+    userWord: [["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""]],
+    userResult: [["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""]],
     word: "",
     result : "",
     strList : [],
@@ -21,13 +22,14 @@ const dataSlice = createSlice({
     name: "dataSlice",
     initialState: initialState,
     reducers:{
-        insertItem: (state, action, callback)=>{
-            console.log(action);
-            const idxStr=action.payload[0];
-            const idx = parseInt(idxStr.match(/\d+/)[0]);
-            console.log(idx);
-            (state.userWord)[idx-1]=action.payload[1];
-
+        insertItem: (state, action)=>{
+            // console.log(action);
+            // const idxStr=action.payload[0];
+            // const idx = parseInt(idxStr.match(/\d+/)[0]);
+            // console.log(idx);
+            // (state.userWord)[idx-1]=action.payload[1];
+            state.userWord=action.payload[0]
+            state.userResult=action.payload[1]
         },
         setFirstStrList: (state,action) => {
             state.strList=action.payload

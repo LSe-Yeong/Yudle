@@ -1,11 +1,13 @@
 import {useState, useEffect} from "react";
 import { useDispatch,useSelector } from 'react-redux';
-import { setSecond } from "../../store/dataslice";
+import { setRunning, setSecond } from "../../store/dataslice";
+import Cookies from "js-cookie";
 
 function Timer(){
-    const [seconds, setSeconds] = useState(0);
+    
+    const [seconds, setSeconds] = useState(Number(Cookies.get("time")));
+    const dispatch = useDispatch()
     // const [isRunning, setIsRunning] = useState(false);
-  
 
     const data=useSelector((state)=>{
       return state.data;
@@ -14,10 +16,21 @@ function Timer(){
 
     useEffect(() => {
       let interval;
-  
+      var count=seconds
+      console.log(seconds)
+      if(Cookies.get("isover")==="run" && seconds>=0){
+        dispatch(setRunning(true))
+      }
+      else{
+        dispatch(setRunning(false))
+      }
+
       if (isRunning) {
         interval = setInterval(() => {
+          count++
+          Cookies.set("time",count)
           setSeconds(preSecond=>preSecond+1);
+          console.log(Cookies.get("time"))
         }, 1000);
       } else {
         clearInterval(interval);

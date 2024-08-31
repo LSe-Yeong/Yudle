@@ -5,8 +5,9 @@ import "../asset/component/background.css"
 import {getTodayWord, getChangeNum, getValidation} from "../api/PostApi";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUserWord, setRunning } from "../store/dataslice";
+import { clearUserWord, insertItem, setRunning } from "../store/dataslice";
 import Timer from "../asset/component/Timer";
+import Cookies from "js-cookie";
 
 const buttonStyle={
     backgroundColor: '#4CAF50',
@@ -32,7 +33,7 @@ function GamePage(){
     const [count,setCount]=useState(1); //사용자 시도 횟수
     const [todayWord,setTodayWord]=useState([]);
 
-    const isdisabled=(count) >6 || count==-1 ? true : false; 
+    const isdisabled=(count) > 6 || count==-1 ? true : false; 
     var isValid;
 
     const dispatch=useDispatch();
@@ -43,15 +44,61 @@ function GamePage(){
     console.log("재 랜더링")
     console.log(count)
     console.log(todayWord);
+    console.log(data.userWord)
+    console.log(data.userResult)
+
+    function cookieDataTest(userAnswerList,userResultList){
+        var inputs = document.querySelectorAll('input[name^="input"]');
+        let count=0
+        let j=0
+        for(let i=0;i<6*userAnswerList.length;i++){
+            if(i%6==0 && i!=0){
+                count++
+            }
+            if((userResultList[count])[i%6]==="green"){
+                inputs[i].style.backgroundColor="green"
+            }
+            else if(userResultList[count][i%6]==="orange"){
+                inputs[i].style.backgroundColor="#FFA500"
+            }
+            else{
+                inputs[i].style.backgroundColor="gray"
+            }
+            inputs[i].value=(userAnswerList[count])[i%6]
+            inputs[i].style.color="white"
+        }
+        const isOver=Cookies.get("isover")
+        if(isOver=="stop"){
+            setCount(-1)
+        }
+        else{
+            setCount(userAnswerList.length+1)
+        }
+    }
 
     function get_today_word(){
         getTodayWord().then((data)=>{
-            setTodayWord(data);
+            setTodayWord([...data]);
         });  //
     }
 
     
     useEffect(() => {
+        const userAnswerListJSON=Cookies.get('userAnswer')
+        // Cookies.set('userAnswer',JSON.stringify([]), { expires: 1});
+        // Cookies.set('userResult',JSON.stringify([]), { expires: 1});
+        // Cookies.set("time",0)
+        // Cookies.set("isover","pendding")
+        if(userAnswerListJSON){
+            const userAnswerList=JSON.parse(userAnswerListJSON)
+            const userResultList=JSON.parse(Cookies.get('userResult'))
+            dispatch(insertItem([userAnswerList,userResultList]))
+            cookieDataTest(userAnswerList,userResultList)
+        }
+        else{
+            Cookies.set('userAnswer',JSON.stringify([]), { expires: 1});
+            Cookies.set('userResult',JSON.stringify([]), { expires: 1});
+        }
         console.log("몇번 실행될까");
         get_today_word();
         // const intervalId = setInterval(get_today_word, 60 * 1000);
@@ -80,7 +127,6 @@ function GamePage(){
                     var userWord=[];
                     var greenCount=0;
 
-                    console.log(todayWord);
                     for(let i=(count-1)*6;i<(count-1)*6+6;i++){
                         userWord.push(inputs[i].value);
                         elements.push(inputs[i])
@@ -94,29 +140,56 @@ function GamePage(){
                     getValidation(valid_data)
                     .then((data) => {
                         isValid = data;
+                        let temp_user=[]
+                        let temp_today=[]
+                        let result=new Array(6)
+                        for(let i=0;i<6;i++){
+                            temp_user[i]=userWord[i]
+                            temp_today[i]=todayWord[i]
+                        }
                         if(isValid){
                             for(let i=0;i<6;i++){
-                                console.log(userWord[i]==todayWord[i])
-                                if(userWord[i]==todayWord[i]){
-                                    elements[i].style.color = "white"
-                                    elements[i].style.transition = "background-color 0.7s ease"
-                                    elements[i].style.backgroundColor ='green';
-                                    greenCount=greenCount+1;
+                                if(temp_user[i]==='X')
+                                    continue;
+                                for(let j=0;j<6;j++){
+                                    if(temp_user[j]===temp_today[j]){
+                                        elements[j].style.color = "white"
+                                        elements[j].style.transition = "background-color 0.7s ease"
+                                        elements[j].style.backgroundColor ='green';
+                                        result[j]="green"
+                                        temp_user[j]='X'
+                                        temp_today[j]='N'
+                                        greenCount=greenCount+1;
+                                    }
                                 }
-                                else if(todayWord.includes(elements[i].value)){
-                                    elements[i].style.color = "white"
-                                    elements[i].style.transition = "background-color 0.7s ease"
-                                    elements[i].style.backgroundColor = '#FFA500';
-                                }
-                                else{
-                                    elements[i].style.color = "white"
-                                    elements[i].style.transition = "background-color 0.7s ease"
-                                    elements[i].style.backgroundColor = 'gray';
+                                for(let j=0;j<6;j++){
+                                    if(temp_user[i]==='X')
+                                        break
+                                    if(temp_user[i]===temp_today[j]){
+                                        elements[i].style.color = "white"
+                                        elements[i].style.transition = "background-color 0.7s ease"
+                                        elements[i].style.backgroundColor = '#FFA500';
+                                        result[i]="orange"
+                                        temp_user[i]='X'
+                                        temp_today[j]='N'
+                                        break
+                                    }
+                                    else if(j==5){
+                                        elements[i].style.color = "white"
+                                        elements[i].style.transition = "background-color 0.7s ease"
+                                        elements[i].style.backgroundColor = 'gray';
+                                        result[i]="gray"
+                                    }
                                 }
                             }
                             console.log(greenCount)
                             if(greenCount==6){
                                 setCount(-1);
+                                Cookies.set('isover',"stop", { expires: 1 });
+                                dispatch(setRunning(false))
+                            }
+                            else if(count==6){
+                                Cookies.set('isover',"stop")
                                 dispatch(setRunning(false))
                             }
                             else{
@@ -124,6 +197,16 @@ function GamePage(){
                                 dispatch(clearUserWord());
                                 console.log(count)
                             }
+                            const userAnswerList=JSON.parse(Cookies.get('userAnswer'))
+                            const userResultList=JSON.parse(Cookies.get('userResult'))
+                            console.log(userAnswerList)
+                            userAnswerList.push(userWord)
+                            userResultList.push(result)
+                            Cookies.set('userAnswer',JSON.stringify(userAnswerList), { expires: 1 });
+                            Cookies.set('userResult',JSON.stringify(userResultList), { expires: 1 });
+                            dispatch(insertItem([userAnswerList,userResultList]))
+                            console.log(userAnswerList)
+                            console.log(userWord)
                         }
                         else{
                             alert("유효하지 않습니다.")

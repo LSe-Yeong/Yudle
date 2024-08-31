@@ -134,17 +134,31 @@ def recommend_text(my_jamoText,result,jamo_str):
     return recommend_set
 
 def Test(my_jamoText,target_jamoText,result_set):
-    result=[]
+    temp_my=[]
+    temp_answer=[]
     for i in range(len(my_jamoText)):
-        if(my_jamoText[i]==target_jamoText[i]):
-            result.append('g')
+        temp_my.append(my_jamoText[i])
+        temp_answer.append(target_jamoText[i])
+    result=[0 for _ in range(6)]
+    for i in range(len(my_jamoText)):
+        if(temp_my[i]=="X"):
             continue
+        for k in range(len(my_jamoText)):
+            if(temp_my[k]==temp_answer[k]):
+                temp_my[k]="X"
+                temp_answer[k]="N"
+                result[k] = 'g'
+                continue
         for j in range(len(my_jamoText)):
-            if(my_jamoText[i]==target_jamoText[j]):
-                result.append('y')
+            if(temp_my[j]=="X"):
+                break
+            if(temp_my[i]==temp_answer[j]):
+                temp_my[i]="X"
+                temp_answer[j]="N"
+                result[i] = 'y'
                 break
             elif(j==5):
-                result.append('o')
+                result[i] = 'o'
     result_set.append(result)
     return
 
