@@ -39,7 +39,7 @@ function GamePage(){
     const dispatch=useDispatch();
     const data=useSelector((state)=>{
         return state.data;
-      });
+    });
 
     console.log("재 랜더링")
     console.log(count)
@@ -47,10 +47,9 @@ function GamePage(){
     console.log(data.userWord)
     console.log(data.userResult)
 
-    function cookieDataTest(userAnswerList,userResultList){
+    function cookieDataSetting(userAnswerList,userResultList){
         var inputs = document.querySelectorAll('input[name^="input"]');
         let count=0
-        let j=0
         for(let i=0;i<6*userAnswerList.length;i++){
             if(i%6==0 && i!=0){
                 count++
@@ -82,8 +81,7 @@ function GamePage(){
         });  //
     }
 
-    
-    useEffect(() => {
+    function settingData(){
         const userAnswerListJSON=Cookies.get('userAnswer')
         // Cookies.set('userAnswer',JSON.stringify([]), { expires: 1});
         // Cookies.set('userResult',JSON.stringify([]), { expires: 1});
@@ -93,16 +91,33 @@ function GamePage(){
             const userAnswerList=JSON.parse(userAnswerListJSON)
             const userResultList=JSON.parse(Cookies.get('userResult'))
             dispatch(insertItem([userAnswerList,userResultList]))
-            cookieDataTest(userAnswerList,userResultList)
+            cookieDataSetting(userAnswerList,userResultList)
         }
         else{
             Cookies.set('userAnswer',JSON.stringify([]), { expires: 1});
             Cookies.set('userResult',JSON.stringify([]), { expires: 1});
+            Cookies.set("time",0)
+            Cookies.set("isover","pendding")
         }
+    }
+    
+    function addCookieData(userWord,result){
+        const userAnswerList=JSON.parse(Cookies.get('userAnswer'))
+        const userResultList=JSON.parse(Cookies.get('userResult'))
+        console.log(userAnswerList)
+        userAnswerList.push(userWord)
+        userResultList.push(result)
+        Cookies.set('userAnswer',JSON.stringify(userAnswerList), { expires: 1 });
+        Cookies.set('userResult',JSON.stringify(userResultList), { expires: 1 });
+        dispatch(insertItem([userAnswerList,userResultList]))
+        console.log(userAnswerList)
+        console.log(userWord)
+    }
+
+    useEffect(() => {
+        settingData()
         console.log("몇번 실행될까");
         get_today_word();
-        // const intervalId = setInterval(get_today_word, 60 * 1000);
-        // return () => clearInterval(intervalId); // 컴포넌트가 언마운트될 때 interval을 정리합니다.  // 상태가 변경될 때마다 실행됩니다.
       },[]);
     
     
@@ -183,35 +198,28 @@ function GamePage(){
                                 }
                             }
                             console.log(greenCount)
-                            if(greenCount==6){
+                            if(greenCount==6){ //다 맞춘 경우
                                 setCount(-1);
                                 Cookies.set('isover',"stop", { expires: 1 });
                                 dispatch(setRunning(false))
                             }
-                            else if(count==6){
+                            else if(count==6){ //모든 기회 다쓴 경우
                                 Cookies.set('isover',"stop")
                                 dispatch(setRunning(false))
                             }
-                            else{
+                            else{ //나머지 경우 다음 기회로 
                                 setCount(count+1)
                                 dispatch(clearUserWord());
                                 console.log(count)
                             }
-                            const userAnswerList=JSON.parse(Cookies.get('userAnswer'))
-                            const userResultList=JSON.parse(Cookies.get('userResult'))
-                            console.log(userAnswerList)
-                            userAnswerList.push(userWord)
-                            userResultList.push(result)
-                            Cookies.set('userAnswer',JSON.stringify(userAnswerList), { expires: 1 });
-                            Cookies.set('userResult',JSON.stringify(userResultList), { expires: 1 });
-                            dispatch(insertItem([userAnswerList,userResultList]))
-                            console.log(userAnswerList)
-                            console.log(userWord)
+
+                            //쿠키 데이터 처리
+                            addCookieData(userWord,result);
                         }
                         else{
                             alert("유효하지 않습니다.")
                             return null;
-                        } // 비동기 작업이 완료된 후에 실행됩니다.
+                        } 
                     });         
                 }}>입력</button>
             </div>

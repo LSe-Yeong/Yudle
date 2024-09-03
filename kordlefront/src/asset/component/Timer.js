@@ -7,11 +7,11 @@ function Timer(){
     
     const [seconds, setSeconds] = useState(Number(Cookies.get("time")));
     const dispatch = useDispatch()
-    // const [isRunning, setIsRunning] = useState(false);
 
     const data=useSelector((state)=>{
       return state.data;
     });
+
     const isRunning=data.isRunning
 
     useEffect(() => {
@@ -38,15 +38,6 @@ function Timer(){
   
       return () => clearInterval(interval);
     }, [isRunning]);
-  
-    // const handleToggle = () => {
-    //   setIsRunning(prevIsRunning => !prevIsRunning);
-    // };
-  
-    // const handleReset = () => {
-    //   setSeconds(0);
-    //   setIsRunning(true);
-    // };
   
     return (
       <div>

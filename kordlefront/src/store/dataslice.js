@@ -10,12 +10,13 @@ const initialState = {
     userName: "김철수",
     userWord: [["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""]],
     userResult: [["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""]],
+    isRunning : false,
+    second: 0,
+
     word: "",
     result : "",
     strList : [],
     recommend_word: [],
-    isRunning : false,
-    second: 0
 }
 
 const dataSlice = createSlice({
@@ -23,11 +24,6 @@ const dataSlice = createSlice({
     initialState: initialState,
     reducers:{
         insertItem: (state, action)=>{
-            // console.log(action);
-            // const idxStr=action.payload[0];
-            // const idx = parseInt(idxStr.match(/\d+/)[0]);
-            // console.log(idx);
-            // (state.userWord)[idx-1]=action.payload[1];
             state.userWord=action.payload[0]
             state.userResult=action.payload[1]
         },

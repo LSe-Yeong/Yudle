@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 
 function AnswerBar(props){
 
-    var inputs=document.querySelectorAll('input[name^="input"]');
+    // var inputs=document.querySelectorAll('input[name^="input"]');
 
     const inputWordStyle={
         width: '50px',
@@ -36,9 +36,7 @@ function AnswerBar(props){
     const id=Number(props.id)
     const count = props.count
     const isdisabled = id != count ? true : false; 
-    
     const dispatch=useDispatch();
-    const data=useSelector(state=>state.data);
 
     // 유효성 검사 코드 보류
     // const userAnswer=data.userWord
@@ -57,17 +55,12 @@ function AnswerBar(props){
 
     function wordChangeHandler(event){
         Cookies.set("isover","run")
-        // for(let i=(props.count-1)*6;i<(props.count-1)*6+6;i++){
-        //     inputs[i].style.color = 'black';
-        // }     
         dispatch(setRunning(true))
-        // dispatch(insertItem([event.target.name,event.target.value]));
     }
 
     return(
         <div style={divStyle}> 
-            <input onChange={(event)=>{
-                wordChangeHandler(event)}} style={inputWordStyle} name="input1" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input onChange={wordChangeHandler} style={inputWordStyle} name="input1" type="text" maxLength={1} disabled={isdisabled}></input>
             <input onChange={wordChangeHandler} style={inputWordStyle} name="input2" type="text" maxLength={1} disabled={isdisabled}></input>
             <input onChange={wordChangeHandler} style={inputWordStyle} name="input3" type="text" maxLength={1} disabled={isdisabled}></input>
             <input onChange={wordChangeHandler} style={inputWordStyle} name="input4" type="text" maxLength={1} disabled={isdisabled}></input>
