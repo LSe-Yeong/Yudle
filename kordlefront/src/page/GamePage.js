@@ -142,8 +142,8 @@ function GamePage(){
         const userAnswerListJSON=Cookies.get('userAnswer')
         // Cookies.set('userAnswer',JSON.stringify([]), { expires: 1});
         // Cookies.set('userResult',JSON.stringify([]), { expires: 1});
-        // Cookies.set("time",0)
-        // Cookies.set("isover","pendding")
+        // Cookies.set("time",0,{expires: 1})
+        // Cookies.set("isover","pendding",{expires: 1})
         if(userAnswerListJSON){
             const userAnswerList=JSON.parse(userAnswerListJSON)
             const userResultList=JSON.parse(Cookies.get('userResult'))
@@ -153,8 +153,8 @@ function GamePage(){
         else{
             Cookies.set('userAnswer',JSON.stringify([]), { expires: 1});
             Cookies.set('userResult',JSON.stringify([]), { expires: 1});
-            Cookies.set("time",0)
-            Cookies.set("isover","pendding")
+            Cookies.set("time",0,{expires:1})
+            Cookies.set("isover","pendding",{expires:1})
         }
     }
     

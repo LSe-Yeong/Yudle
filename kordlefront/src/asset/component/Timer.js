@@ -28,7 +28,7 @@ function Timer(){
       if (isRunning) {
         interval = setInterval(() => {
           count++
-          Cookies.set("time",count)
+          Cookies.set("time",count,{expires:1})
           setSeconds(preSecond=>preSecond+1);
           console.log(Cookies.get("time"))
         }, 1000);
