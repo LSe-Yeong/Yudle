@@ -8,7 +8,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearUserWord, insertItem, setRunning } from "../store/dataslice";
 import Timer from "../asset/component/Timer";
 import Cookies from "js-cookie";
+import Modal from "react-modal"
 
+const customStyles={
+    overlay: {
+        backgroundColor : "rgba(0,0,0,0.5)",
+    },
+    content : {
+        width : "300px",
+        height : "400px",
+        margin : "auto",
+        borderRadius : "4px",
+        boxShadow : "0 2px 4px rgba(0,0,0,0.2)",
+        padding: "20px"
+    }
+}
 const buttonStyle={
     backgroundColor: '#4CAF50',
     border: 'none',
@@ -27,11 +41,53 @@ const hoverStyle = {
     backgroundColor: 'green',
 };
 
+function ModalContent(props){
+    const second = props.second
+    const count = props.count
+    const total = Number(second) + Number(count)
+
+    function Message(){
+        if(count==-1){
+            return(
+                <div>
+                    <h2 style={{fontSize:"70px"}}>아쉽게 실패하셨습니다 다음 기회에 도전하세요~~</h2>
+                </div>
+            )
+        }
+        else{
+            return(
+                <div>
+                    <h2 style={{fontSize:"40px"}}>시도 횟수 : {count} 회 </h2> 
+                    <h2 style={{fontSize:"40px"}}>걸린 시간 : {second} 초 </h2>
+                    <h2 style={{fontSize:"40px"}}>총 점수 : {total} </h2>  
+                    <h2 style={{marginTop:"50px"}}> 이름을 입력해주세요</h2>
+                    <input type="text"></input>        
+                    <button style={{marginLeft:"10px"}}>확인</button> 
+                </div>
+            )
+        }
+    }
+
+    return(
+        <Message></Message>
+    )
+}
+
 
 function GamePage(){
     const [hover,setHover]=useState(false);
     const [count,setCount]=useState(1); //사용자 시도 횟수
+    const [rightCount,setRightCount] = useState(1)
     const [todayWord,setTodayWord]=useState([]);
+    const [isOpen,setIsOpen]=useState(false)
+
+    const openModal = () =>{
+        setIsOpen(true);
+    }
+
+    const closeModal = () => {
+        setIsOpen(false)
+    }
 
     const isdisabled=(count) > 6 || count==-1 ? true : false; 
     var isValid;
@@ -69,6 +125,7 @@ function GamePage(){
         const isOver=Cookies.get("isover")
         if(isOver=="stop"){
             setCount(-1)
+            setIsOpen(true)
         }
         else{
             setCount(userAnswerList.length+1)
@@ -199,12 +256,18 @@ function GamePage(){
                             }
                             console.log(greenCount)
                             if(greenCount==6){ //다 맞춘 경우
+                                setRightCount(count)
+                                Cookies.set("rightCount",count)
                                 setCount(-1);
                                 Cookies.set('isover',"stop", { expires: 1 });
+                                setIsOpen(true)
                                 dispatch(setRunning(false))
                             }
                             else if(count==6){ //모든 기회 다쓴 경우
                                 Cookies.set('isover',"stop")
+                                setRightCount(-1)
+                                Cookies.set("rightCount",-1)
+                                setIsOpen(true)
                                 dispatch(setRunning(false))
                             }
                             else{ //나머지 경우 다음 기회로 
@@ -222,6 +285,9 @@ function GamePage(){
                         } 
                     });         
                 }}>입력</button>
+                <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
+                    <ModalContent second={Cookies.get("time")} count={Cookies.get("rightCount")}></ModalContent>
+                </Modal>
             </div>
         </div>
     );
