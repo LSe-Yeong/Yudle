@@ -9,8 +9,14 @@ import random
 #uvicorn ggoodle:app --reload --host=0.0.0.0 --port=8800
 
 app=FastAPI()
-    
-today_num=0
+
+today_num=351
+
+@app.get("/api/change/word")
+def change_word():
+    global today_num
+    today_num=random.randint(0,len(first_str_word)-1)
+    print(today_num)
 
 class Item(BaseModel):
     word: str
@@ -20,7 +26,6 @@ class Item(BaseModel):
 class validWord(BaseModel):
     validWord: list
 
-    
 @app.get("/api/hello")
 async def Hello():
     return "hello,world"
@@ -50,7 +55,6 @@ async def change_num():
     
 @app.get("/api/todayWord")
 async def today_word():
-    today_num=521
     print(today_num)
     return first_str_word[today_num]
 
@@ -163,6 +167,10 @@ def Test(my_jamoText,target_jamoText,result_set):
     return
 
 first_str_word = find_hangle_list()
+
+@app.on_event("shutdown")
+def shutdown_event():
+    scheduler.shutdown()
 # str_jamo_list=find_hangle_list()
 
 # while(True):
