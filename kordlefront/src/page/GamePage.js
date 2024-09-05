@@ -84,6 +84,8 @@ function GamePage(){
 
     const expirationTime = new Date();
 
+    console.log(todayWord)
+
     if(12<=expirationTime.getHours() && expirationTime.getHours()<24){ //자정 ~ 정오
         expirationTime.setDate(expirationTime.getDate()+1)
     }
