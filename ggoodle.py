@@ -1,5 +1,5 @@
 from jamo import h2j,j2hcj
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, UploadFile, Response
 from unicode import join_jamos
 import pandas as pd
 import re
@@ -13,10 +13,13 @@ app=FastAPI()
 today_num=351
 
 @app.get("/api/change/word")
-def change_word():
+def change_word(response : Response):
     global today_num
     today_num=random.randint(0,len(first_str_word)-1)
+    response.set_cookie(key="userAnswer", value="", expires=0)
+    response.set_cookie(key="time", value=0, max_age=3600, expires=3600)
     print(today_num)
+    return {"message": "쿠키가 삭제되었습니다."}
 
 class Item(BaseModel):
     word: str

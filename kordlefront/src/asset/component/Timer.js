@@ -17,7 +17,6 @@ function Timer(){
     useEffect(() => {
       let interval;
       var count=seconds
-      console.log(seconds)
       if(Cookies.get("isover")==="run" && seconds>=0){
         dispatch(setRunning(true))
       }
@@ -30,7 +29,6 @@ function Timer(){
           count++
           Cookies.set("time",count,{expires:1})
           setSeconds(preSecond=>preSecond+1);
-          console.log(Cookies.get("time"))
         }, 1000);
       } else {
         clearInterval(interval);

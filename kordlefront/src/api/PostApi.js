@@ -26,7 +26,6 @@ export async function getTodayWord(){
 export async function getValidation(valid_word){
     try{
         const response = await axios.post('/api/validation',valid_word);
-        console.log(response);
         return response.data;
     }
     catch(error){

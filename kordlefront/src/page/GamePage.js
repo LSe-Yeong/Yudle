@@ -9,6 +9,7 @@ import { clearUserWord, insertItem, setRunning } from "../store/dataslice";
 import Timer from "../asset/component/Timer";
 import Cookies from "js-cookie";
 import Modal from "react-modal"
+import { changeWord } from "../api/GetApi";
 
 const customStyles={
     overlay: {
@@ -44,13 +45,13 @@ const hoverStyle = {
 function ModalContent(props){
     const second = props.second
     const count = props.count
-    const total = Number(second) + Number(count)
+    const total = 200 - (0.4*Number(second) + 10*Number(count))
 
     function Message(){
         if(count==-1){
             return(
                 <div>
-                    <h2 style={{fontSize:"70px"}}>아쉽게 실패하셨습니다 다음 기회에 도전하세요~~</h2>
+                    <h2 style={{fontSize:"20px"}}>아쉽게 실패하셨습니다 다음 기회에 도전하세요~~</h2>
                 </div>
             )
         }
@@ -81,6 +82,13 @@ function GamePage(){
     const [todayWord,setTodayWord]=useState([]);
     const [isOpen,setIsOpen]=useState(false)
 
+    const expirationTime = new Date();
+
+    if(12<=expirationTime.getHours() && expirationTime.getHours()<24){ //자정 ~ 정오
+        expirationTime.setDate(expirationTime.getDate()+1)
+    }
+    expirationTime.setHours(12, 0, 0, 0); // 시, 분, 초, 밀리초 설정
+    
     const openModal = () =>{
         setIsOpen(true);
     }
@@ -96,12 +104,6 @@ function GamePage(){
     const data=useSelector((state)=>{
         return state.data;
     });
-
-    console.log("재 랜더링")
-    console.log(count)
-    console.log(todayWord);
-    console.log(data.userWord)
-    console.log(data.userResult)
 
     function cookieDataSetting(userAnswerList,userResultList){
         var inputs = document.querySelectorAll('input[name^="input"]');
@@ -140,7 +142,7 @@ function GamePage(){
 
     function settingData(){
         const userAnswerListJSON=Cookies.get('userAnswer')
-        // Cookies.set('userAnswer',JSON.stringify([]), { expires: 1});
+        // Cookies.set('userAnswer',JSON.stringify([]), { expires: expirationTime });
         // Cookies.set('userResult',JSON.stringify([]), { expires: 1});
         // Cookies.set("time",0,{expires: 1})
         // Cookies.set("isover","pendding",{expires: 1})
@@ -151,29 +153,27 @@ function GamePage(){
             cookieDataSetting(userAnswerList,userResultList)
         }
         else{
-            Cookies.set('userAnswer',JSON.stringify([]), { expires: 1});
-            Cookies.set('userResult',JSON.stringify([]), { expires: 1});
-            Cookies.set("time",0,{expires:1})
-            Cookies.set("isover","pendding",{expires:1})
+            Cookies.set('userAnswer',JSON.stringify([]), { expires: expirationTime});
+            Cookies.set('userResult',JSON.stringify([]), { expires: expirationTime});
+            Cookies.set("time",0,{expires:expirationTime})
+            Cookies.set("isover","pendding",{expires:expirationTime})
+            changeWord()
+            window.location.reload()
         }
     }
     
     function addCookieData(userWord,result){
         const userAnswerList=JSON.parse(Cookies.get('userAnswer'))
         const userResultList=JSON.parse(Cookies.get('userResult'))
-        console.log(userAnswerList)
         userAnswerList.push(userWord)
         userResultList.push(result)
-        Cookies.set('userAnswer',JSON.stringify(userAnswerList), { expires: 1 });
-        Cookies.set('userResult',JSON.stringify(userResultList), { expires: 1 });
+        Cookies.set('userAnswer',JSON.stringify(userAnswerList), { expires: expirationTime });
+        Cookies.set('userResult',JSON.stringify(userResultList), { expires: expirationTime });
         dispatch(insertItem([userAnswerList,userResultList]))
-        console.log(userAnswerList)
-        console.log(userWord)
     }
 
     useEffect(() => {
         settingData()
-        console.log("몇번 실행될까");
         get_today_word();
       },[]);
     
@@ -254,7 +254,6 @@ function GamePage(){
                                     }
                                 }
                             }
-                            console.log(greenCount)
                             if(greenCount==6){ //다 맞춘 경우
                                 setRightCount(count)
                                 Cookies.set("rightCount",count)
@@ -264,7 +263,8 @@ function GamePage(){
                                 dispatch(setRunning(false))
                             }
                             else if(count==6){ //모든 기회 다쓴 경우
-                                Cookies.set('isover',"stop")
+                                Cookies.set('isover',"stop",{expires: 1 })
+                                setCount(count+1)
                                 setRightCount(-1)
                                 Cookies.set("rightCount",-1)
                                 setIsOpen(true)
@@ -273,7 +273,6 @@ function GamePage(){
                             else{ //나머지 경우 다음 기회로 
                                 setCount(count+1)
                                 dispatch(clearUserWord());
-                                console.log(count)
                             }
 
                             //쿠키 데이터 처리
