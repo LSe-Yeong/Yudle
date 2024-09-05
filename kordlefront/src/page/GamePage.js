@@ -157,7 +157,6 @@ function GamePage(){
             Cookies.set('userResult',JSON.stringify([]), { expires: expirationTime});
             Cookies.set("time",0,{expires:expirationTime})
             Cookies.set("isover","pendding",{expires:expirationTime})
-            changeWord()
             window.location.reload()
         }
     }
