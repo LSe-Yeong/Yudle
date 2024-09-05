@@ -45,7 +45,7 @@ const hoverStyle = {
 function ModalContent(props){
     const second = props.second
     const count = props.count
-    const total = 200 - (0.4*Number(second) + 10*Number(count))
+    const total = 200 - (0.4*Number(second) + 10*Number(count));
 
     function Message(){
         if(count==-1){
