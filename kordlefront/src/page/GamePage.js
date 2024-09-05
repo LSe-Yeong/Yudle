@@ -255,17 +255,17 @@ function GamePage(){
                             }
                             if(greenCount==6){ //다 맞춘 경우
                                 setRightCount(count)
-                                Cookies.set("rightCount",count)
+                                Cookies.set("rightCount",count,{expires: expirationTime})
                                 setCount(-1);
-                                Cookies.set('isover',"stop", { expires: 1 });
+                                Cookies.set('isover',"stop", { expires: expirationTime });
                                 setIsOpen(true)
                                 dispatch(setRunning(false))
                             }
                             else if(count==6){ //모든 기회 다쓴 경우
-                                Cookies.set('isover',"stop",{expires: 1 })
+                                Cookies.set('isover',"stop",{expires: expirationTime })
                                 setCount(count+1)
                                 setRightCount(-1)
-                                Cookies.set("rightCount",-1)
+                                Cookies.set("rightCount",-1,{expires: expirationTime})
                                 setIsOpen(true)
                                 dispatch(setRunning(false))
                             }
