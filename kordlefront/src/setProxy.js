@@ -5,7 +5,7 @@ module.exports = function(app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: process.env.SERVER_URL,
+      target: "http://ec2-54-252-10-146.ap-southeast-2.compute.amazonaws.com:8800",
       changeOrigin: true,
     })
   );

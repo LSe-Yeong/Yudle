@@ -5,6 +5,8 @@ import pandas as pd
 import re
 from pydantic import BaseModel
 import random
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime
 
 #uvicorn ggoodle:app --reload --host=0.0.0.0 --port=8800
 
@@ -12,14 +14,16 @@ app=FastAPI()
 
 today_num=351
 
-@app.get("/api/change/word")
-def change_word(response : Response):
+def change_word():
     global today_num
     today_num=random.randint(0,len(first_str_word)-1)
-    response.set_cookie(key="userAnswer", value="", expires=0)
-    response.set_cookie(key="time", value=0, max_age=3600, expires=3600)
     print(today_num)
-    return {"message": "쿠키가 삭제되었습니다."}
+
+scheduler = BackgroundScheduler()
+
+scheduler.add_job(change_word, 'cron', hour=12, minute=0)
+
+scheduler.start()
 
 class Item(BaseModel):
     word: str

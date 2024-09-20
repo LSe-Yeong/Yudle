@@ -10,7 +10,15 @@ import Timer from "../asset/component/Timer";
 import Cookies from "js-cookie";
 import Modal from "react-modal"
 import { changeWord } from "../api/GetApi";
+import { useNavigate } from "react-router-dom";
 
+const expirationTime = new Date();
+
+if(12<=expirationTime.getHours() && expirationTime.getHours()<24){ //자정 ~ 정오
+    expirationTime.setDate(expirationTime.getDate()+1)
+}
+expirationTime.setHours(12, 0, 0, 0); // 시, 분, 초, 밀리초 설정
+    
 const customStyles={
     overlay: {
         backgroundColor : "rgba(0,0,0,0.5)",
@@ -45,13 +53,54 @@ const hoverStyle = {
 function ModalContent(props){
     const second = props.second
     const count = props.count
-    const total = 200 - (0.4*Number(second) + 10*Number(count))
+    const total = 200 - (0.4*Number(second) + 10*Number(count));
+    const [name,setName] = useState("")
+    const navigate = useNavigate()
 
-    function Message(){
-        if(count==-1){
+    useEffect(() => {
+        setName(Cookies.get("name"))
+      },[]);
+
+    function nameHandler(event){
+        setName(event.target.value)
+        console.log(name)
+    }
+
+    function saveName(){
+        Cookies.set("name",name,{expires: expirationTime})
+        alert(name+"님 등록 되었습니다.")
+        navigate("/")
+    }
+
+    if(count==-1){
+        if(Cookies.get("name")){
             return(
                 <div>
-                    <h2 style={{fontSize:"20px"}}>아쉽게 실패하셨습니다 다음 기회에 도전하세요~~</h2>
+                    <h2 style={{fontSize:"20px"}}>{name}님 안녕하세요 아쉽게 실패하셨습니다 다음 기회에 도전하세요~~</h2>
+                </div>
+            )
+        }
+        else{
+            return(
+                <div>
+                    <h2 style={{fontSize:"20px"}}>아쉽게 실패하셨습니다. 다음 기회에 도전하세요~~</h2>
+                    <h2 style={{marginTop:"50px"}}> 이름을 입력해주세요</h2>
+                    <input type="text" name="saveName" onChange={nameHandler}></input>        
+                    <button style={{marginLeft:"10px"}} onClick={saveName}>확인</button> 
+                </div>
+            )
+        }
+    }
+
+    else{
+        if(Cookies.get("name")){
+            return(
+                <div>
+                    <h2> {name}님 안녕하세요 </h2>
+                    <h2 style={{fontSize:"40px"}}>시도 횟수 : {count} 회 </h2> 
+                    <h2 style={{fontSize:"40px"}}>걸린 시간 : {second} 초 </h2>
+                    <h2 style={{fontSize:"40px"}}>총 점수 : {total} </h2> 
+                    <h2> 입니다. </h2>
                 </div>
             )
         }
@@ -62,16 +111,12 @@ function ModalContent(props){
                     <h2 style={{fontSize:"40px"}}>걸린 시간 : {second} 초 </h2>
                     <h2 style={{fontSize:"40px"}}>총 점수 : {total} </h2>  
                     <h2 style={{marginTop:"50px"}}> 이름을 입력해주세요</h2>
-                    <input type="text"></input>        
-                    <button style={{marginLeft:"10px"}}>확인</button> 
+                    <input type="text" name="saveName2" onChange={nameHandler}></input>        
+                    <button style={{marginLeft:"10px"}} onClick={saveName}>확인</button> 
                 </div>
             )
         }
     }
-
-    return(
-        <Message></Message>
-    )
 }
 
 
@@ -82,12 +127,12 @@ function GamePage(){
     const [todayWord,setTodayWord]=useState([]);
     const [isOpen,setIsOpen]=useState(false)
 
-    const expirationTime = new Date();
+    // const expirationTime = new Date();
 
-    if(12<=expirationTime.getHours() && expirationTime.getHours()<24){ //자정 ~ 정오
-        expirationTime.setDate(expirationTime.getDate()+1)
-    }
-    expirationTime.setHours(12, 0, 0, 0); // 시, 분, 초, 밀리초 설정
+    // if(12<=expirationTime.getHours() && expirationTime.getHours()<24){ //자정 ~ 정오
+    //     expirationTime.setDate(expirationTime.getDate()+1)
+    // }
+    // expirationTime.setHours(12, 0, 0, 0); // 시, 분, 초, 밀리초 설정
     
     const openModal = () =>{
         setIsOpen(true);
@@ -143,9 +188,10 @@ function GamePage(){
     function settingData(){
         const userAnswerListJSON=Cookies.get('userAnswer')
         // Cookies.set('userAnswer',JSON.stringify([]), { expires: expirationTime });
-        // Cookies.set('userResult',JSON.stringify([]), { expires: 1});
-        // Cookies.set("time",0,{expires: 1})
-        // Cookies.set("isover","pendding",{expires: 1})
+        // Cookies.set('userResult',JSON.stringify([]), { expires: expirationTime});
+        // Cookies.set("time",0,{expires: expirationTime})
+        // Cookies.set("isover","pendding",{expires: expirationTime})
+        // Cookies.remove("name")
         if(userAnswerListJSON){
             const userAnswerList=JSON.parse(userAnswerListJSON)
             const userResultList=JSON.parse(Cookies.get('userResult'))
@@ -157,7 +203,6 @@ function GamePage(){
             Cookies.set('userResult',JSON.stringify([]), { expires: expirationTime});
             Cookies.set("time",0,{expires:expirationTime})
             Cookies.set("isover","pendding",{expires:expirationTime})
-            changeWord()
             window.location.reload()
         }
     }
@@ -256,17 +301,17 @@ function GamePage(){
                             }
                             if(greenCount==6){ //다 맞춘 경우
                                 setRightCount(count)
-                                Cookies.set("rightCount",count)
+                                Cookies.set("rightCount",count,{expires: expirationTime})
                                 setCount(-1);
-                                Cookies.set('isover',"stop", { expires: 1 });
+                                Cookies.set('isover',"stop", { expires: expirationTime });
                                 setIsOpen(true)
                                 dispatch(setRunning(false))
                             }
                             else if(count==6){ //모든 기회 다쓴 경우
-                                Cookies.set('isover',"stop",{expires: 1 })
+                                Cookies.set('isover',"stop",{expires: expirationTime })
                                 setCount(count+1)
                                 setRightCount(-1)
-                                Cookies.set("rightCount",-1)
+                                Cookies.set("rightCount",-1,{expires: expirationTime})
                                 setIsOpen(true)
                                 dispatch(setRunning(false))
                             }
