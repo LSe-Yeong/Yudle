@@ -53,10 +53,8 @@ const dataSlice = createSlice({
         },
         setRecommendWord: (state,action) =>{
             state.recommend_word=action.payload;
-            console.log(state.recommend_word);
         },
         changeUserName: (state,action)=>{
-            console.log(action);
             state.userName=action.payload;
         },
         setRunning: (state,action)=>{
