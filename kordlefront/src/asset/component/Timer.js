@@ -39,7 +39,7 @@ function Timer(){
   
     return (
       <div>
-        <h1>타이머: {seconds}초</h1>
+        <h2 style={{fontSize:"25px"}}>타이머: {seconds}초</h2>
       </div>
     );
 }
