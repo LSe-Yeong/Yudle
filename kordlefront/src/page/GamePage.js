@@ -4,7 +4,7 @@ import "../asset/component/background.css"
 import {getTodayWord, getChangeNum, getValidation} from "../api/PostApi";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUserWord, insertItem, setRunning } from "../store/dataslice";
+import { clearUserWord, insertItem, setRunning,updateJamoState } from "../store/dataslice";
 import Timer from "../asset/component/Timer";
 import Cookies from "js-cookie";
 import Modal from "react-modal"
@@ -158,12 +158,15 @@ function GamePage(){
             }
             if((userResultList[count])[i%6]==="green"){
                 inputs[i].style.backgroundColor="green"
+                dispatch(updateJamoState([userAnswerList[count][i%6],"green"]))
             }
             else if(userResultList[count][i%6]==="orange"){
                 inputs[i].style.backgroundColor="#FFA500"
+                dispatch(updateJamoState([userAnswerList[count][i%6],"orange"]))
             }
             else{
                 inputs[i].style.backgroundColor="gray"
+                dispatch(updateJamoState([userAnswerList[count][i%6],"gray"]))
             }
             inputs[i].value=(userAnswerList[count])[i%6]
             inputs[i].style.color="white"
@@ -225,13 +228,13 @@ function GamePage(){
     return(
         <div className="backGround">
             <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-                <div>
+                <div style={{width:"20%",height:"600px"}}>
                     <JamoLayout></JamoLayout>
                 </div>
-                <div style={{display:"flex",flexDirection:"column", marginTop:"30px"}}>
+                <div style={{width:"60%", display:"flex",flexDirection:"column", marginTop:"30px"}}>
                     <div>
                         <Maker></Maker>
-                        <div style={{display:"flex","justifyContent":"flex-end"}}>
+                        <div style={{display:"flex","justifyContent":"center", marginLeft:"270px"}}>
                             <Timer></Timer>
                         </div>
                     </div>
@@ -280,6 +283,7 @@ function GamePage(){
                                                 elements[j].style.transition = "background-color 0.7s ease"
                                                 elements[j].style.backgroundColor ='green';
                                                 result[j]="green"
+                                                dispatch(updateJamoState([temp_user[j],"green"]))
                                                 temp_user[j]='X'
                                                 temp_today[j]='N'
                                                 greenCount=greenCount+1;
@@ -293,6 +297,7 @@ function GamePage(){
                                                 elements[i].style.transition = "background-color 0.7s ease"
                                                 elements[i].style.backgroundColor = '#FFA500';
                                                 result[i]="orange"
+                                                dispatch(updateJamoState([temp_user[i],"orange"]))
                                                 temp_user[i]='X'
                                                 temp_today[j]='N'
                                                 break
@@ -302,6 +307,7 @@ function GamePage(){
                                                 elements[i].style.transition = "background-color 0.7s ease"
                                                 elements[i].style.backgroundColor = 'gray';
                                                 result[i]="gray"
+                                                dispatch(updateJamoState([temp_user[i],"gray"]))
                                             }
                                         }
                                     }
@@ -340,7 +346,7 @@ function GamePage(){
                         </Modal>
                     </div>
                 </div>
-                <div>
+                <div style={{width:"20%"}}>
                     이곳은 랭킹 시스템 입니다.
                 </div>
             </div>
