@@ -7,6 +7,7 @@ from pydantic import BaseModel
 import random
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
+from ggoodleDB import add_user,get_user,delete_all
 
 #uvicorn ggoodle:app --reload --host=0.0.0.0 --port=8800
 
@@ -25,6 +26,13 @@ scheduler.add_job(change_word, 'cron', hour=12, minute=0)
 
 scheduler.start()
 
+class Users(BaseModel):
+    name: str
+    time : int
+    count : int
+    score : int
+    isSolved : bool
+
 class Item(BaseModel):
     word: str
     result: str 
@@ -36,6 +44,18 @@ class validWord(BaseModel):
 @app.get("/api/hello")
 async def Hello():
     return "hello,world"
+
+@app.post("/api/save/rank")
+async def add_user_info(users: Users):
+    return await add_user(users)
+
+@app.get("/api/get/rank")
+async def get_user_info():
+    return await get_user()
+
+@app.delete("/api/delete/rank")
+async def delete_all_info():
+    return await delete_all()
 
 @app.post("/api/validation")
 async def word_validation(word: validWord):
