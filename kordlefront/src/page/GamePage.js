@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import Modal from "react-modal"
 import { useNavigate } from "react-router-dom";
 import JamoLayout from "../asset/component/JamoLayout";
+import RankingLayout from "../asset/component/RankingLayout";
 
 const expirationTime = new Date();
 
@@ -347,7 +348,7 @@ function GamePage(){
                     </div>
                 </div>
                 <div style={{width:"20%"}}>
-                    이곳은 랭킹 시스템 입니다.
+                    <RankingLayout></RankingLayout>
                 </div>
             </div>
         </div>
