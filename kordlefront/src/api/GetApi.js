@@ -10,3 +10,13 @@ export async function changeWord(){
         return [];
     }
 } 
+
+export async function getRanking(){
+    try{
+        const response = await axios.get('/api/get/rank')
+        return response.data
+    }catch(error){
+        console.log(error)
+        return [];
+    }
+}

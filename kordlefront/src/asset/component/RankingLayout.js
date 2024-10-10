@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getRanking } from "../../api/GetApi";
 
 function RankingLayout(){
-    const [users,setUsers] = useState([
-        {"name":"건공이","score":123,"isSolved":true,"date":"2024-10-01 19:34:31"},
-        {"name":"파블로프","score":113,"isSolved":true,"date":"2024-10-01 19:34:32"},
-        {"name":"판다","score":100,"isSolved":true,"date":"2024-10-01 19:34:38"},
-        {"name":"플랑보","score":93,"isSolved":true,"date":"2024-10-01 19:34:39"},
-        {"name":"벤츠","score":76,"isSolved":true,"date":"2024-10-01 19:34:39"},
-        {"name":"종판","score":0,"isSolved":false,"date":"2024-10-01 19:34:39"},
-        {"name":"2124km","score":0,"isSolved":false,"date":"2024-10-01 19:34:39"},
-    ])
+    const [users,setUsers] = useState([])
+
+    useEffect(() => {
+        getRanking().then((response)=>{
+            setUsers(response)
+        })
+      },[]);
 
     function RankingFirstToEnd(){
         const content=[]

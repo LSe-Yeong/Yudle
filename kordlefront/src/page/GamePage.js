@@ -1,7 +1,7 @@
 import AnswerBar from "../asset/component/AnswerBar";
 import Maker from "../asset/component/Maker";
 import "../asset/component/background.css"
-import {getTodayWord, getChangeNum, getValidation} from "../api/PostApi";
+import {getTodayWord, getChangeNum, getValidation, saveUser} from "../api/PostApi";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUserWord, insertItem, setRunning,updateJamoState } from "../store/dataslice";
@@ -53,7 +53,7 @@ const hoverStyle = {
 function ModalContent(props){
     const second = props.second
     const count = props.count
-    const total = 200 - (0.4*Number(second) + 10*Number(count));
+    const total = parseInt(200 - (0.4*Number(second) + 10*Number(count)));
     const [name,setName] = useState("")
     const navigate = useNavigate()
 
@@ -66,8 +66,20 @@ function ModalContent(props){
         console.log(name)
     }
 
-    function saveName(){
+    function saveName(state){
         Cookies.set("name",name,{expires: expirationTime})
+        const userData={
+            "name" : name,
+            "time" : Number(second),
+            "count" : Number(count),
+            "score" : total,
+            "isSolved" : state
+        }
+        if(state==false){
+            userData["score"]=-1
+        }
+
+        saveUser(userData)
         alert(name+"님 등록 되었습니다.")
         navigate("/")
     }
@@ -86,7 +98,7 @@ function ModalContent(props){
                     <h2 style={{fontSize:"20px"}}>아쉽게 실패하셨습니다. 다음 기회에 도전하세요~~</h2>
                     <h2 style={{marginTop:"50px"}}> 이름을 입력해주세요</h2>
                     <input type="text" name="saveName" onChange={nameHandler}></input>        
-                    <button style={{marginLeft:"10px"}} onClick={saveName}>확인</button> 
+                    <button style={{marginLeft:"10px"}} onClick={()=>{saveName(false)}}>확인</button> 
                 </div>
             )
         }
@@ -112,7 +124,7 @@ function ModalContent(props){
                     <h2 style={{fontSize:"40px"}}>총 점수 : {total} </h2>  
                     <h2 style={{marginTop:"50px"}}> 이름을 입력해주세요</h2>
                     <input type="text" name="saveName2" onChange={nameHandler}></input>        
-                    <button style={{marginLeft:"10px"}} onClick={saveName}>확인</button> 
+                    <button style={{marginLeft:"10px"}} onClick={()=>{saveName(true)}}>확인</button> 
                 </div>
             )
         }

@@ -34,7 +34,16 @@ export async function getValidation(valid_word){
     }
 }
 
-
+export async function saveUser(data) {
+    try{
+        const response = await axios.post('/api/save/rank',data);
+        return response.data;
+    }
+    catch(error){
+        console.log(error)
+        return [];
+    }
+}
 // export async function getChangeNum(){
 //     try{
 //         const response = await axios.get('/api/change/number')
