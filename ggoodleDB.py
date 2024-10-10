@@ -8,14 +8,26 @@ load_dotenv(dotenv_path="kordlefront/.env")
 
 user = os.getenv('user')
 password = os.getenv('password')
+rdsuser = os.getenv('rdsuser')
+rdspassword = os.getenv('rdspassword')
+rdsEndpoint = os.getenv('rdsEndpoint')
+rdsDatabase = os.getenv('rdsDatabase')
+# # MySQL local 서버에 연결
+# connection = mysql.connector.connect(
+#     host="localhost",       # MySQL 서버 호스트 주소 (로컬이면 'localhost')
+#     user=user,   # MySQL 사용자 이름
+#     password=password, # MySQL 비밀번호
+#     database="ggodle",  # 사용할 데이터베이스 이름
+#     port=4000 #포트번호
+# )
 
-# MySQL 서버에 연결
+# MySQL dev 서버에 연결
 connection = mysql.connector.connect(
-    host="localhost",       # MySQL 서버 호스트 주소 (로컬이면 'localhost')
-    user=user,   # MySQL 사용자 이름
-    password=password, # MySQL 비밀번호
-    database="ggodle",  # 사용할 데이터베이스 이름
-    port=4000 #포트번호
+    host=rdsEndpoint,  # RDS 엔드포인트
+    user=rdsuser,   # RDS MySQL 사용자 이름
+    password=rdspassword,  # RDS MySQL 비밀번호
+    database=rdsDatabase,  # 사용할 데이터베이스 이름
+    port=3306  # MySQL 기본 포트 
 )
 
 if connection.is_connected():
