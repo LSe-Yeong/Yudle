@@ -6,6 +6,7 @@ import re
 from pydantic import BaseModel
 import random
 from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from datetime import datetime
 from ggoodleDB import add_user,get_user,delete_all
 
@@ -15,12 +16,13 @@ app=FastAPI()
 
 today_num=351
 
-def change_word():
+async def change_word():
     global today_num
     today_num=random.randint(0,len(first_str_word)-1)
+    await delete_all()
     print(today_num)
 
-scheduler = BackgroundScheduler()
+scheduler = AsyncIOScheduler()
 
 scheduler.add_job(change_word, 'cron', hour=12, minute=0)
 
