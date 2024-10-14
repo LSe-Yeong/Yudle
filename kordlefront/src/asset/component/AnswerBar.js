@@ -9,8 +9,8 @@ function AnswerBar(props){
     // var inputs=document.querySelectorAll('input[name^="input"]');
 
     const inputWordStyle={
-        width: '50px',
-        height: '50px',
+        width: '40px',
+        height: '40px',
         fontSize: '25px',
         textAlign: 'center',
         marginTop: '7px',

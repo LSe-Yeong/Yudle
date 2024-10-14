@@ -3,8 +3,8 @@ import { useSelector,useDispatch } from "react-redux";
 function Jamo(props){
     const JamoStyle={
         display:"inline-block",
-        width:"30px",
-        height:"30px",
+        // width:"100%",
+        // height:"100%",
         fontSize:"25px",
         marginLeft:"4px",
         marginTop:"4px",

@@ -1,6 +1,7 @@
 import AnswerBar from "../asset/component/AnswerBar";
 import Maker from "../asset/component/Maker";
 import "../asset/component/background.css"
+import "./GamePage.css"
 import {getTodayWord, getChangeNum, getValidation, saveUser} from "../api/PostApi";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -240,14 +241,14 @@ function GamePage(){
     
     return(
         <div className="backGround">
-            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-                <div style={{width:"20%",height:"600px"}}>
+            <div className="container">
+                <div className="jamolayout" style={{}}>
                     <JamoLayout></JamoLayout>
                 </div>
-                <div style={{width:"60%", display:"flex",flexDirection:"column", marginTop:"30px"}}>
+                <div className="game" style={{}}>
                     <div>
                         <Maker></Maker>
-                        <div style={{display:"flex","justifyContent":"center", marginLeft:"270px"}}>
+                        <div style={{display:"flex","justifyContent":"center", marginLeft:"200px"}}>
                             <Timer></Timer>
                         </div>
                     </div>
@@ -359,7 +360,7 @@ function GamePage(){
                         </Modal>
                     </div>
                 </div>
-                <div style={{width:"20%"}}>
+                <div className="ranking">
                     <RankingLayout></RankingLayout>
                 </div>
             </div>
