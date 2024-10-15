@@ -12,6 +12,8 @@ import Modal from "react-modal"
 import { useNavigate } from "react-router-dom";
 import JamoLayout from "../asset/component/JamoLayout";
 import RankingLayout from "../asset/component/RankingLayout";
+import DescriptionButton from "../asset/component/DescriptionButton";
+import RankingButton from "../asset/component/RankingButton";
 
 const expirationTime = new Date();
 
@@ -248,7 +250,9 @@ function GamePage(){
                 <div className="game" style={{}}>
                     <div>
                         <Maker></Maker>
-                        <div style={{display:"flex","justifyContent":"center", marginLeft:"200px"}}>
+                        <div style={{display:"flex","justifyContent":"center", marginLeft:"110px"}}>
+                            <DescriptionButton className="DescriptionButton"></DescriptionButton>
+                            <RankingButton className="RankingButton"></RankingButton>
                             <Timer></Timer>
                         </div>
                     </div>

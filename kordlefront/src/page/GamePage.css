@@ -27,6 +27,22 @@
     justify-content: center;
 }
 
+.RankingButton img {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: white;
+    margin-left : 5px;
+    margin-right: 5px;
+}
+
+.DescriptionButton img {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: lightgray;
+}
+
 /* 화면이 768px 이하일 때는 열을 한 개로 변경 (수직 배치) */
 @media (max-width: 1200px) {
     .container {

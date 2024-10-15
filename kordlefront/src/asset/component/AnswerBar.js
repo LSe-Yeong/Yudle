@@ -8,6 +8,8 @@ function AnswerBar(props){
 
     // var inputs=document.querySelectorAll('input[name^="input"]');
 
+    const inputRefs=useRef([useRef(null),useRef(null),useRef(null),useRef(null),useRef(null),useRef(null)])
+    
     const inputWordStyle={
         width: '40px',
         height: '40px',
@@ -52,6 +54,19 @@ function AnswerBar(props){
     //     })
     //     console.log("다참 ㅋㅋㅋㅋ");
     // }
+    const handleKeyUp = (e, index) => {
+        const key = e.key; // 눌린 키를 확인
+
+        if (key === 'Backspace') {
+            // 백스페이스 키가 눌렸을 때
+            if (index > 0) {
+                inputRefs.current[index - 1].current.focus(); // 이전 input으로 포커스 이동
+            }
+        } else if (e.target.value.length === 1 && index < inputRefs.current.length - 1) {
+            // 입력된 글자가 1글자일 때 다음 input으로 포커스 이동
+            inputRefs.current[index + 1].current.focus();
+        }
+    };
 
     function wordChangeHandler(event){
         Cookies.set("isover","run")
@@ -60,12 +75,12 @@ function AnswerBar(props){
 
     return(
         <div style={divStyle}> 
-            <input onChange={wordChangeHandler} style={inputWordStyle} name="input1" type="text" maxLength={1} disabled={isdisabled}></input>
-            <input onChange={wordChangeHandler} style={inputWordStyle} name="input2" type="text" maxLength={1} disabled={isdisabled}></input>
-            <input onChange={wordChangeHandler} style={inputWordStyle} name="input3" type="text" maxLength={1} disabled={isdisabled}></input>
-            <input onChange={wordChangeHandler} style={inputWordStyle} name="input4" type="text" maxLength={1} disabled={isdisabled}></input>
-            <input onChange={wordChangeHandler} style={inputWordStyle} name="input5" type="text" maxLength={1} disabled={isdisabled}></input>
-            <input onChange={wordChangeHandler} style={inputWordStyle} name="input6" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input ref={inputRefs.current[0]} onKeyUp={(e)=> handleKeyUp(e,0)} onChange={wordChangeHandler} style={inputWordStyle} name="input1" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input ref={inputRefs.current[1]} onKeyUp={(e)=> handleKeyUp(e,1)} onChange={wordChangeHandler} style={inputWordStyle} name="input2" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input ref={inputRefs.current[2]} onKeyUp={(e)=> handleKeyUp(e,2)} onChange={wordChangeHandler} style={inputWordStyle} name="input3" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input ref={inputRefs.current[3]} onKeyUp={(e)=> handleKeyUp(e,3)} onChange={wordChangeHandler} style={inputWordStyle} name="input4" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input ref={inputRefs.current[4]} onKeyUp={(e)=> handleKeyUp(e,4)} onChange={wordChangeHandler} style={inputWordStyle} name="input5" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input ref={inputRefs.current[5]} onKeyUp={(e)=> handleKeyUp(e,5)} onChange={wordChangeHandler} style={inputWordStyle} name="input6" type="text" maxLength={1} disabled={isdisabled}></input>
         </div>
     );
 }
