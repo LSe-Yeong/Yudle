@@ -8,7 +8,7 @@
     font-family: 'KyoboHandwriting2023wsa';   
 }
 
-@media (max-width: 380px) {
+@media (max-width: 440px) {
     .inputWord{
         width: 25px;
         height: 25px;
