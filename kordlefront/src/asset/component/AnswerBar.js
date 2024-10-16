@@ -3,22 +3,13 @@ import {getValidation} from "../../api/PostApi";
 import { useDispatch, useSelector } from 'react-redux';
 import { insertItem, setUserWord, setRunning } from "../../store/dataslice";
 import Cookies from "js-cookie";
+import "./AnswerBar.css";
 
 function AnswerBar(props){
 
     // var inputs=document.querySelectorAll('input[name^="input"]');
 
     const inputRefs=useRef([useRef(null),useRef(null),useRef(null),useRef(null),useRef(null),useRef(null)])
-    
-    const inputWordStyle={
-        width: '40px',
-        height: '40px',
-        fontSize: '25px',
-        textAlign: 'center',
-        marginTop: '7px',
-        marginRight: '5px',
-        fontFamily: 'KyoboHandwriting2023wsa',
-    };
 
     const inputStyle = {
         width: '50px', // 각 입력 필드의 너비
@@ -75,12 +66,12 @@ function AnswerBar(props){
 
     return(
         <div style={divStyle}> 
-            <input ref={inputRefs.current[0]} onKeyUp={(e)=> handleKeyUp(e,0)} onChange={wordChangeHandler} style={inputWordStyle} name="input1" type="text" maxLength={1} disabled={isdisabled}></input>
-            <input ref={inputRefs.current[1]} onKeyUp={(e)=> handleKeyUp(e,1)} onChange={wordChangeHandler} style={inputWordStyle} name="input2" type="text" maxLength={1} disabled={isdisabled}></input>
-            <input ref={inputRefs.current[2]} onKeyUp={(e)=> handleKeyUp(e,2)} onChange={wordChangeHandler} style={inputWordStyle} name="input3" type="text" maxLength={1} disabled={isdisabled}></input>
-            <input ref={inputRefs.current[3]} onKeyUp={(e)=> handleKeyUp(e,3)} onChange={wordChangeHandler} style={inputWordStyle} name="input4" type="text" maxLength={1} disabled={isdisabled}></input>
-            <input ref={inputRefs.current[4]} onKeyUp={(e)=> handleKeyUp(e,4)} onChange={wordChangeHandler} style={inputWordStyle} name="input5" type="text" maxLength={1} disabled={isdisabled}></input>
-            <input ref={inputRefs.current[5]} onKeyUp={(e)=> handleKeyUp(e,5)} onChange={wordChangeHandler} style={inputWordStyle} name="input6" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input className="inputWord" ref={inputRefs.current[0]} onKeyUp={(e)=> handleKeyUp(e,0)} onChange={wordChangeHandler}  name="input1" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input className="inputWord" ref={inputRefs.current[1]} onKeyUp={(e)=> handleKeyUp(e,1)} onChange={wordChangeHandler}  name="input2" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input className="inputWord" ref={inputRefs.current[2]} onKeyUp={(e)=> handleKeyUp(e,2)} onChange={wordChangeHandler}  name="input3" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input className="inputWord" ref={inputRefs.current[3]} onKeyUp={(e)=> handleKeyUp(e,3)} onChange={wordChangeHandler}  name="input4" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input className="inputWord" ref={inputRefs.current[4]} onKeyUp={(e)=> handleKeyUp(e,4)} onChange={wordChangeHandler}  name="input5" type="text" maxLength={1} disabled={isdisabled}></input>
+            <input className="inputWord" ref={inputRefs.current[5]} onKeyUp={(e)=> handleKeyUp(e,5)} onChange={wordChangeHandler}  name="input6" type="text" maxLength={1} disabled={isdisabled}></input>
         </div>
     );
 }
