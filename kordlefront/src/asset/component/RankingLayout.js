@@ -13,7 +13,7 @@ function RankingLayout(){
     function RankingFirstToEnd(){
         const content=[]
         if(users[0]["isSolved"])
-            content.push(<h2 style={{fontSize:"40px", color:"red"}}>1등: {users[0]["name"]} : {users[0]["score"]}점</h2>)
+            content.push(<h2 style={{color:"red"}}>1등: {users[0]["name"]} : {users[0]["score"]}점</h2>)
         
         for(let i=1;i<users.length;i++){
             if(users[i]["isSolved"])

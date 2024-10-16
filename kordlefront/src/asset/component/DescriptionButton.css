@@ -1,0 +1,17 @@
+@media (max-width: 570px) {
+    .descriptionmodal h1{
+        font-size: 25px;
+    }
+    .descriptionmodal h2{
+        font-size: 15px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .descriptionmodal h1{
+        font-size: 18px;
+    }
+    .descriptionmodal h2{
+        font-size: 12px;
+    }
+  }

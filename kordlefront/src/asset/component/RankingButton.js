@@ -3,6 +3,7 @@ import { useState } from 'react';
 import DescriptionImage from '../image/description.png';
 import Modal from "react-modal"
 import RankingLayout from './RankingLayout';
+import "./RankingButton.css"
 
 function RankingButton(props){
 
@@ -20,7 +21,9 @@ function RankingButton(props){
         <div className={props.className}>
             <img src={rankingImage} alt="없음" onClick={openModal}></img>
             <Modal isOpen={isOpen} onRequestClose={closeModal}>
-                <RankingLayout></RankingLayout>
+                <div className='rankingmodal'>
+                    <RankingLayout></RankingLayout>
+                </div>
             </Modal>
         </div>
     )
