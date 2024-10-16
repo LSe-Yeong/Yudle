@@ -19,7 +19,6 @@ function AnswerBar(props){
         boxSizing: 'border-box' // 테두리를 요소의 너비와 높이에 포함시킴
       };
     
-    
     const divStyle={
         display: 'flex',
         justifyContent: 'center',
