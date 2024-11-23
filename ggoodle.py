@@ -24,6 +24,8 @@ async def change_word():
 
 scheduler = AsyncIOScheduler()
 
+#리눅스 서버 배포시 시간 -9시간 해줘야함
+#scheduler.add_job(change_word, 'cron', hour=3, minute=0)
 scheduler.add_job(change_word, 'cron', hour=12, minute=0)
 
 scheduler.start()
@@ -196,6 +198,8 @@ def Test(my_jamoText,target_jamoText,result_set):
     return
 
 first_str_word = find_hangle_list()
+print(first_str_word[len(first_str_word)-1])
+print(len(first_str_word))
 
 @app.on_event("shutdown")
 def shutdown_event():
