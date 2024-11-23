@@ -19,12 +19,6 @@ function AnswerBar(props){
         boxSizing: 'border-box' // 테두리를 요소의 너비와 높이에 포함시킴
       };
     
-    const divStyle={
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    };
-
     const id=Number(props.id)
     const count = props.count
     const isdisabled = id != count ? true : false; 
@@ -64,7 +58,7 @@ function AnswerBar(props){
     }
 
     return(
-        <div style={divStyle}> 
+        <div className="wordContainer"> 
             <input className="inputWord" ref={inputRefs.current[0]} onKeyUp={(e)=> handleKeyUp(e,0)} onChange={wordChangeHandler}  name="input1" type="text" maxLength={1} disabled={isdisabled}></input>
             <input className="inputWord" ref={inputRefs.current[1]} onKeyUp={(e)=> handleKeyUp(e,1)} onChange={wordChangeHandler}  name="input2" type="text" maxLength={1} disabled={isdisabled}></input>
             <input className="inputWord" ref={inputRefs.current[2]} onKeyUp={(e)=> handleKeyUp(e,2)} onChange={wordChangeHandler}  name="input3" type="text" maxLength={1} disabled={isdisabled}></input>

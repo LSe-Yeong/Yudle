@@ -2,6 +2,7 @@ import {useState, useEffect} from "react";
 import { useDispatch,useSelector } from 'react-redux';
 import { setRunning, setSecond } from "../../store/dataslice";
 import Cookies from "js-cookie";
+import "./Timer.css"
 
 function Timer(){
     
@@ -29,7 +30,7 @@ function Timer(){
           count++
           Cookies.set("time",count,{expires:1})
           setSeconds(preSecond=>preSecond+1);
-        }, 1000);
+        }, 10);
       } else {
         clearInterval(interval);
       }
@@ -39,7 +40,7 @@ function Timer(){
   
     return (
       <div>
-        <h2 style={{fontSize:"25px"}}>타이머: {seconds}초</h2>
+        <h2 className="timer">타이머 : {seconds/100}초</h2>
       </div>
     );
 }

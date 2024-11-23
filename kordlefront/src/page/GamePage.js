@@ -1,6 +1,7 @@
 import AnswerBar from "../asset/component/AnswerBar";
 import Maker from "../asset/component/Maker";
 import "../asset/component/background.css"
+import clockImg from "../asset/image/clock.png"
 import "./GamePage.css"
 import {getTodayWord, getChangeNum, getValidation, saveUser} from "../api/PostApi";
 import React, { useEffect, useState } from 'react';
@@ -173,15 +174,15 @@ function GamePage(){
                 count++
             }
             if((userResultList[count])[i%6]==="green"){
-                inputs[i].style.backgroundColor="green"
+                inputs[i].style.backgroundColor="#f55980"
                 dispatch(updateJamoState([userAnswerList[count][i%6],"green"]))
             }
             else if(userResultList[count][i%6]==="orange"){
-                inputs[i].style.backgroundColor="#FFA500"
+                inputs[i].style.backgroundColor="#F2C53D"
                 dispatch(updateJamoState([userAnswerList[count][i%6],"orange"]))
             }
             else{
-                inputs[i].style.backgroundColor="gray"
+                inputs[i].style.backgroundColor="#49C2F2"
                 dispatch(updateJamoState([userAnswerList[count][i%6],"gray"]))
             }
             inputs[i].value=(userAnswerList[count])[i%6]
@@ -242,21 +243,20 @@ function GamePage(){
     
     
     return(
-        <div className="backGround">
+        <div>
             <div className="container">
-                <div className="jamolayout" style={{}}>
-                    <JamoLayout></JamoLayout>
+                <div className="rankingHeader">
+                    <h2>오늘의 랭킹 예정</h2>
                 </div>
-                <div className="game" style={{}}>
-                    <div>
-                        <Maker></Maker>
-                        <div style={{display:"flex","justifyContent":"center", marginLeft:"110px"}}>
-                            <DescriptionButton className="DescriptionButton"></DescriptionButton>
-                            <RankingButton className="RankingButton"></RankingButton>
+                <div className="game">
+                    <div className="ArticleHeader">
+                        <img className="clockImg" src={clockImg} alt="없음"></img>
+                        <div>
+                            <Maker></Maker>
                             <Timer></Timer>
                         </div>
                     </div>
-                    <div>
+                    <div className="gameboard">
                         <AnswerBar id="1" count={count}></AnswerBar>
                         <AnswerBar id="2" count={count}></AnswerBar>
                         <AnswerBar id="3" count={count}></AnswerBar>
@@ -264,8 +264,8 @@ function GamePage(){
                         <AnswerBar id="5" count={count}></AnswerBar>
                         <AnswerBar id="6" count={count}></AnswerBar>
                     </div>
-                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
-                        <button disabled={isdisabled} type="submit" style={hover ? { ...buttonStyle, ...hoverStyle } : buttonStyle} onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)} onClick={()=>{
+                    <div className="buttonDiv">
+                        <button className="subButton" disabled={isdisabled} type="submit" onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)} onClick={()=>{
                             var inputs = document.querySelectorAll('input[name^="input"]');
                             var elements=[];
                             var userWord=[];
@@ -299,7 +299,7 @@ function GamePage(){
                                             if(temp_user[j]===temp_today[j]){
                                                 elements[j].style.color = "white"
                                                 elements[j].style.transition = "background-color 0.7s ease"
-                                                elements[j].style.backgroundColor ='green';
+                                                elements[j].style.backgroundColor ='#f55980';
                                                 result[j]="green"
                                                 dispatch(updateJamoState([temp_user[j],"green"]))
                                                 temp_user[j]='X'
@@ -313,7 +313,7 @@ function GamePage(){
                                             if(temp_user[i]===temp_today[j]){
                                                 elements[i].style.color = "white"
                                                 elements[i].style.transition = "background-color 0.7s ease"
-                                                elements[i].style.backgroundColor = '#FFA500';
+                                                elements[i].style.backgroundColor = '#F2C53D';
                                                 result[i]="orange"
                                                 dispatch(updateJamoState([temp_user[i],"orange"]))
                                                 temp_user[i]='X'
@@ -323,7 +323,7 @@ function GamePage(){
                                             else if(j==5){
                                                 elements[i].style.color = "white"
                                                 elements[i].style.transition = "background-color 0.7s ease"
-                                                elements[i].style.backgroundColor = 'gray';
+                                                elements[i].style.backgroundColor = '#49C2F2';
                                                 result[i]="gray"
                                                 dispatch(updateJamoState([temp_user[i],"gray"]))
                                             }
@@ -360,12 +360,9 @@ function GamePage(){
                             });         
                         }}>입력</button>
                         <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
-                            <ModalContent second={Cookies.get("time")} count={Cookies.get("rightCount")}></ModalContent>
+                            <ModalContent second={Cookies.get("time")/100} count={Cookies.get("rightCount")}></ModalContent>
                         </Modal>
                     </div>
-                </div>
-                <div className="ranking">
-                    <RankingLayout></RankingLayout>
                 </div>
             </div>
         </div>

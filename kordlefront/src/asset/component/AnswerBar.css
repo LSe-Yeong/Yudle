@@ -3,14 +3,20 @@
     height: 40px;
     font-size: 25px;
     text-align: center;
-    margin-top: 7px;
-    margin-right: 5px;
+    margin-right: 12px;
     font-family: 'KyoboHandwriting2023wsa';   
+    border: none;
+    border-radius: 12px;      /* 모서리를 둥글게 */
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+}
+
+.wordContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 5px auto;
 }
 
 @media (max-width: 440px) {
-    .inputWord{
-        width: 25px;
-        height: 25px;
-    }
+   
   }
