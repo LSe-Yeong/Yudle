@@ -1,0 +1,29 @@
+.rankingHeader {
+    border-bottom: 3px solid lightgray;
+    box-sizing: border-box;
+}
+
+.rankingTitle{
+    font-size: 50px;
+    letter-spacing: 5px;
+    margin-left:15px;
+    background: linear-gradient(to right, 
+    #FF7E79 0%,   /* 핑크 시작 */
+    #FF7E79 70%,  /* 핑크를 40%까지 유지 */
+    #FFA76B 80%,  /* 오렌지 */
+    #FFD56E 100%  /* 노랑 */
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.rankingHeader_1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rankingPoint{
+   
+}

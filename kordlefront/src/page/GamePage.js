@@ -15,6 +15,7 @@ import JamoLayout from "../asset/component/JamoLayout";
 import RankingLayout from "../asset/component/RankingLayout";
 import DescriptionButton from "../asset/component/DescriptionButton";
 import RankingButton from "../asset/component/RankingButton";
+import RankingHeader from "../asset/component/RankingHeader";
 
 const expirationTime = new Date();
 
@@ -245,9 +246,7 @@ function GamePage(){
     return(
         <div>
             <div className="container">
-                <div className="rankingHeader">
-                    <h2>오늘의 랭킹 예정</h2>
-                </div>
+                <RankingHeader></RankingHeader>
                 <div className="game">
                     <div className="ArticleHeader">
                         <img className="clockImg" src={clockImg} alt="없음"></img>

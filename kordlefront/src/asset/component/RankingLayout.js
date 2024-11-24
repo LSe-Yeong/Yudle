@@ -1,63 +1,55 @@
 import { useState, useEffect } from "react";
 import { getRanking } from "../../api/GetApi";
+import "./RankingLayout.css"
+
+function RankingComponent(props){
+
+    const colorStyle = {
+        "background" : "linear-gradient(to right, gold 0%, gold 30%, #fd8332 100%)"
+    }
+
+    const userData = props.users;
+    const thisRankId = props.rankId;
+    const thisUserName = userData[thisRankId-1]["name"]
+
+    if(thisRankId==2){
+        colorStyle["background"]= "gray"
+    }
+    else if(thisRankId==3){
+        colorStyle["background"]="#f29161"
+    }
+
+    return(
+        <div className="rankingComponent">
+            <div className="rankingNumber" style={colorStyle}>
+                <h2>{thisRankId}</h2>
+            </div>
+            <div className="rankingPropertys">
+                <h2 className="rankingNumberTitle">오늘의 {thisRankId}위</h2>
+                <h2 className="rankingName">{thisUserName}</h2>
+            </div>
+        </div>
+    )
+}
 
 function RankingLayout(){
-    const [users,setUsers] = useState([])
-
+    const [users,setUsers] = useState()
+    const [testUsers,setTestUsers] = useState([{"id":1,"name":"전역이 2026"},{"id":2,"name":"전역이 2026"},{"id":3,"name":"전역이 2026"}])
     useEffect(() => {
         getRanking().then((response)=>{
             setUsers(response)
         })
       },[]);
 
-    function RankingFirstToEnd(){
-        const content=[]
-        if(users[0]["isSolved"])
-            content.push(<h2 style={{color:"red"}}>1등: {users[0]["name"]} : {users[0]["score"]}점</h2>)
-        
-        for(let i=1;i<users.length;i++){
-            if(users[i]["isSolved"])
-                content.push(<h2>{i+1}등: {users[i]["name"]} : {users[i]["score"]}점</h2>)
-        }
-        return(
-            <div>
-                {content}
+    return(
+        <div className="rankingSet">
+            <RankingComponent rankId={1} users={testUsers}></RankingComponent>
+            <div style={{display:"flex", flexDirection:"row", marginTop:"10px"}}>
+            <RankingComponent rankId={2} users={testUsers}></RankingComponent>
+            <RankingComponent rankId={3} users={testUsers}></RankingComponent>
             </div>
-        )
-    }
-
-    function RankingNotSolved(){
-        const content=[]
-        for(let i=0;i<users.length;i++){
-            if(!users[i]["isSolved"]){
-                content.push(<h3 style={{margin:"0px"}}>{users[i]["name"]}</h3>)
-            }
-        }
-        return(
-            <div>
-                {content}
-            </div>
-        )
-    }
-
-    if(users.length==0){
-        return(
-            <div>
-                <h1>오늘의 랭킹입니다.</h1>
-                <h1>단어를 맞춘 사용자가 존재하지 않습니다. <br></br>도전하세요!</h1>
-            </div>
-        )
-    }
-    else{
-        return(
-            <div>
-                <h1>오늘의 랭킹입니다.</h1>
-                <RankingFirstToEnd></RankingFirstToEnd>
-                <h1 style={{marginBottom:"0px"}}>다음에 다시 도전하세요</h1>
-                <RankingNotSolved></RankingNotSolved>
-            </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default RankingLayout;

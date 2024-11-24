@@ -29,7 +29,7 @@ function DescriptionButton(props){
 
     return(
         <div className={props.className}>
-            <img src={DescriptionImage} onClick={openModal}></img>
+            <img className='descriptionImg' src={DescriptionImage} onClick={openModal}></img>
             <Modal isOpen={isOpen} onRequestClose={closeModal}>
                 <DescriptionContent></DescriptionContent>
             </Modal>

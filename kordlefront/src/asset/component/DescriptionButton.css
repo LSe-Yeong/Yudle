@@ -1,3 +1,11 @@
+.descriptionImg{
+    width: 25px;
+    height: 25px;
+    border: 2px solid black;
+    border-radius: 40px;
+    margin-right: 25px;
+}
+
 @media (max-width: 570px) {
     .descriptionmodal h1{
         font-size: 25px;
