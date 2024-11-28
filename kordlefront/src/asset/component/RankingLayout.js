@@ -10,6 +10,20 @@ function RankingComponent(props){
 
     const userData = props.users;
     const thisRankId = props.rankId;
+
+    if(userData.length==0){
+        userData.push({"id":1,"name":"- - -","time":10000,"count":-1,"score":-999})
+        userData.push({"id":2,"name":"- - -","time":10000,"count":-1,"score":-999})
+        userData.push({"id":3,"name":"- - -","time":10000,"count":-1,"score":-999})
+    }
+    else if(userData.length==1){
+        userData.push({"id":2,"name":"- - -","time":10000,"count":-1,"score":-999})
+        userData.push({"id":3,"name":"- - -","time":10000,"count":-1,"score":-999})
+    }
+    else if(userData.length==2){
+        userData.push({"id":3,"name":"- - -","time":10000,"count":-1,"score":-999})
+    }
+
     const thisUserName = userData[thisRankId-1]["name"]
 
     if(thisRankId==2){
@@ -33,20 +47,22 @@ function RankingComponent(props){
 }
 
 function RankingLayout(){
-    const [users,setUsers] = useState()
-    const [testUsers,setTestUsers] = useState([{"id":1,"name":"전역이 2026"},{"id":2,"name":"전역이 2026"},{"id":3,"name":"전역이 2026"}])
+    const [users,setUsers] = useState([])
+
     useEffect(() => {
         getRanking().then((response)=>{
             setUsers(response)
         })
       },[]);
 
+      console.log(users)
+
     return(
         <div className="rankingSet">
-            <RankingComponent rankId={1} users={testUsers}></RankingComponent>
+            <RankingComponent rankId={1} users={users}></RankingComponent>
             <div style={{display:"flex", flexDirection:"row", marginTop:"10px"}}>
-            <RankingComponent rankId={2} users={testUsers}></RankingComponent>
-            <RankingComponent rankId={3} users={testUsers}></RankingComponent>
+            <RankingComponent rankId={2} users={users}></RankingComponent>
+            <RankingComponent rankId={3} users={users}></RankingComponent>
             </div>
         </div>
     )

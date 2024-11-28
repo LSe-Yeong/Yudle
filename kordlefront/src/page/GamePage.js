@@ -133,6 +133,10 @@ function JamoButton(props){
     const buttonContents = []
 
     const handleKeyInput = (value) =>{
+        if(inputs[0].value!=" "){
+            Cookies.set("isover","run")
+            dispatch(setRunning(true))
+        }
         if(currentSelect<6){
             if(currentSelect==5 && inputs[(count-1)*6+currentSelect].value!=""){
                 return
