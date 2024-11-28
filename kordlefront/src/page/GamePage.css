@@ -46,6 +46,30 @@
     border-radius: 10px;
 }
 
+.jamoButtonContainer {
+    display: flex;
+    flex-wrap: wrap; /* 요소가 넘칠 경우 다음 줄로 */
+    gap: 4px;
+    justify-content: center;
+    margin: 30px auto;
+}
+
+.jamoButtonContainer button{
+    width: 34px;
+    height : 34px;
+    background-color: white;
+    border: none;
+    font-size: 22px;
+    color: balck;
+    font-family: 'KyoboHandwriting2023wsa';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.jamoLayer{
+    display: flex;
+}
+
 .RankingButton img {
     width: 30px;
     height: 30px;

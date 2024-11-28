@@ -11,33 +11,34 @@ const initialState = {
     userWord: [["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""]],
     userResult: [["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""],["","","","","",""]],
     jamoList: [
-        {"name":'ㄱ',"state":"none"},
-        {"name":'ㄴ',"state":"none"},
-        {"name":'ㄷ',"state":"none"},
-        {"name":'ㄹ',"state":"none"},
-        {"name":'ㅁ',"state":"none"},
         {"name":'ㅂ',"state":"none"},
-        {"name":'ㅅ',"state":"none"},
-        {"name":'ㅇ',"state":"none"},
         {"name":'ㅈ',"state":"none"},
-        {"name":'ㅊ',"state":"none"},
+        {"name":'ㄷ',"state":"none"},
+        {"name":'ㄱ',"state":"none"},
+        {"name":'ㅅ',"state":"none"},
+        {"name":'ㅛ',"state":"none"},
+        {"name":'ㅕ',"state":"none"},
+        {"name":'ㅑ',"state":"none"},
+        {"name":'ㅁ',"state":"none"},
+        {"name":'ㄴ',"state":"none"},
+        {"name":'ㅇ',"state":"none"},
+        {"name":'ㄹ',"state":"none"},
+        {"name":'ㅎ',"state":"none"},
+        {"name":'ㅗ',"state":"none"},
+        {"name":'ㅓ',"state":"none"},
+        {"name":'ㅏ',"state":"none"},
+        {"name":'ㅣ',"state":"none"},
         {"name":'ㅋ',"state":"none"},
         {"name":'ㅌ',"state":"none"},
+        {"name":'ㅊ',"state":"none"},
         {"name":'ㅍ',"state":"none"},
-        {"name":'ㅎ',"state":"none"},
-        {"name":'ㅏ',"state":"none"},
-        {"name":'ㅑ',"state":"none"},
-        {"name":'ㅓ',"state":"none"},
-        {"name":'ㅕ',"state":"none"},
-        {"name":'ㅗ',"state":"none"},
-        {"name":'ㅛ',"state":"none"},
-        {"name":'ㅜ',"state":"none"},
         {"name":'ㅠ',"state":"none"},
+        {"name":'ㅜ',"state":"none"},
         {"name":'ㅡ',"state":"none"},
-        {"name":'ㅣ',"state":"none"},
     ],
     isRunning : false,
     second: 0,
+    currentSelect: 0,
 
     word: "",
     result : "",
@@ -61,6 +62,10 @@ const dataSlice = createSlice({
                     state.jamoList[i]["state"]=color
                 }
             }
+        },
+
+        updateCurrentSelect: (state,action)=>{
+            state.currentSelect=action.payload
         },
 
         setFirstStrList: (state,action) => {
@@ -105,4 +110,4 @@ const dataSlice = createSlice({
 
 
 export default dataSlice;
-export const {insertItem, updateJamoState,setUserWord, clearUserWord, setFirstStrList, clearWord, addWord,clearResult,addResult,changeStrList,setRecommendWord,changeUserName ,setRunning,  setSecond } = dataSlice.actions; // 괄호 안 함수 작성
+export const {insertItem, updateJamoState,setUserWord, clearUserWord, setFirstStrList, clearWord, addWord,clearResult,addResult,changeStrList,setRecommendWord,changeUserName ,setRunning,  setSecond,updateCurrentSelect } = dataSlice.actions; // 괄호 안 함수 작성

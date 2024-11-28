@@ -6,7 +6,7 @@ import "./GamePage.css"
 import {getTodayWord, getChangeNum, getValidation, saveUser} from "../api/PostApi";
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUserWord, insertItem, setRunning,updateJamoState } from "../store/dataslice";
+import { clearUserWord, insertItem, setRunning,updateJamoState,updateCurrentSelect } from "../store/dataslice";
 import Timer from "../asset/component/Timer";
 import Cookies from "js-cookie";
 import Modal from "react-modal"
@@ -37,23 +37,6 @@ const customStyles={
         padding: "20px"
     }
 }
-const buttonStyle={
-    backgroundColor: '#4CAF50',
-    border: 'none',
-    color: 'white',
-    padding: '10px 20px',
-    textAlign: 'center',
-    textDecoration: 'none',
-    display: 'inline-block',
-    fontSize: '16px',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    marginTop: '20px',
-};
-
-const hoverStyle = {
-    backgroundColor: 'green',
-};
 
 function ModalContent(props){
     const second = props.second
@@ -136,6 +119,60 @@ function ModalContent(props){
     }
 }
 
+  
+function JamoButton(props){
+    const count = props.count
+    var inputs = document.querySelectorAll('input[name^="input"]');
+    const dispatch=useDispatch();
+    const data=useSelector((state)=>{
+        return state.data;
+    });
+    const currentSelect = data.currentSelect
+    const jamoList = data.jamoList
+    const lineStandard=[0,8,8+9,8+9+7]
+    const buttonContents = []
+
+    const handleKeyInput = (value) =>{
+        if(currentSelect<6){
+            if(currentSelect==5 && inputs[(count-1)*6+currentSelect].value!=""){
+                return
+            }
+            inputs[(count-1)*6+currentSelect].value=value
+            if(currentSelect<5){
+                dispatch(updateCurrentSelect(currentSelect+1))
+            }
+        }
+    } 
+
+    const handleBackInput = () =>{
+        if(currentSelect>-1){
+            if(currentSelect==0 && inputs[(count-1)*6+currentSelect].value==""){
+                return
+            }
+            inputs[(count-1)*6+currentSelect].value=""
+            if(currentSelect>0){
+                dispatch(updateCurrentSelect(currentSelect-1))
+            }   
+        }
+    }
+    
+    for(let t=0;t<lineStandard.length-1;t++){
+        for(let i=lineStandard[t];i<lineStandard[t+1];i++){
+            buttonContents.push(<button style={{color:jamoList[i].state}} onClick={()=>{handleKeyInput(jamoList[i].name)}}>{jamoList[i].name}</button>)
+        }
+        if(t==0){
+            buttonContents.push(<button onClick={()=>{handleBackInput()}}>←</button>)
+        }
+        buttonContents.push(<br></br>)
+    }
+
+    return(
+        <div className="jamoButtonContainer">
+            {buttonContents}
+        </div>
+    )
+}
+
 
 function GamePage(){
     const [hover,setHover]=useState(false);
@@ -174,17 +211,17 @@ function GamePage(){
             if(i%6==0 && i!=0){
                 count++
             }
-            if((userResultList[count])[i%6]==="green"){
+            if((userResultList[count])[i%6]==="#f55980"){
                 inputs[i].style.backgroundColor="#f55980"
-                dispatch(updateJamoState([userAnswerList[count][i%6],"green"]))
+                dispatch(updateJamoState([userAnswerList[count][i%6],"#f55980"]))
             }
-            else if(userResultList[count][i%6]==="orange"){
+            else if(userResultList[count][i%6]==="#F2C53D"){
                 inputs[i].style.backgroundColor="#F2C53D"
-                dispatch(updateJamoState([userAnswerList[count][i%6],"orange"]))
+                dispatch(updateJamoState([userAnswerList[count][i%6],"#F2C53D"]))
             }
             else{
                 inputs[i].style.backgroundColor="#49C2F2"
-                dispatch(updateJamoState([userAnswerList[count][i%6],"gray"]))
+                dispatch(updateJamoState([userAnswerList[count][i%6],"#49C2F2"]))
             }
             inputs[i].value=(userAnswerList[count])[i%6]
             inputs[i].style.color="white"
@@ -241,8 +278,7 @@ function GamePage(){
         settingData()
         get_today_word();
       },[]);
-    
-    
+
     return(
         <div>
             <div className="container">
@@ -256,12 +292,13 @@ function GamePage(){
                         </div>
                     </div>
                     <div className="gameboard">
-                        <AnswerBar id="1" count={count}></AnswerBar>
-                        <AnswerBar id="2" count={count}></AnswerBar>
-                        <AnswerBar id="3" count={count}></AnswerBar>
-                        <AnswerBar id="4" count={count}></AnswerBar>
-                        <AnswerBar id="5" count={count}></AnswerBar>
-                        <AnswerBar id="6" count={count}></AnswerBar>
+                        <AnswerBar></AnswerBar>
+                        <AnswerBar></AnswerBar>
+                        <AnswerBar></AnswerBar>
+                        <AnswerBar></AnswerBar>
+                        <AnswerBar></AnswerBar>
+                        <AnswerBar></AnswerBar>
+                        <JamoButton count={count}></JamoButton>
                     </div>
                     <div className="buttonDiv">
                         <button className="subButton" disabled={isdisabled} type="submit" onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)} onClick={()=>{
@@ -291,6 +328,7 @@ function GamePage(){
                                     temp_today[i]=todayWord[i]
                                 }
                                 if(isValid){
+                                    dispatch(updateCurrentSelect(0))
                                     for(let i=0;i<6;i++){
                                         if(temp_user[i]==='X')
                                             continue;
@@ -299,8 +337,8 @@ function GamePage(){
                                                 elements[j].style.color = "white"
                                                 elements[j].style.transition = "background-color 0.7s ease"
                                                 elements[j].style.backgroundColor ='#f55980';
-                                                result[j]="green"
-                                                dispatch(updateJamoState([temp_user[j],"green"]))
+                                                result[j]="#f55980"
+                                                dispatch(updateJamoState([temp_user[j],"#f55980"]))
                                                 temp_user[j]='X'
                                                 temp_today[j]='N'
                                                 greenCount=greenCount+1;
@@ -313,8 +351,8 @@ function GamePage(){
                                                 elements[i].style.color = "white"
                                                 elements[i].style.transition = "background-color 0.7s ease"
                                                 elements[i].style.backgroundColor = '#F2C53D';
-                                                result[i]="orange"
-                                                dispatch(updateJamoState([temp_user[i],"orange"]))
+                                                result[i]="#F2C53D"
+                                                dispatch(updateJamoState([temp_user[i],"#F2C53D"]))
                                                 temp_user[i]='X'
                                                 temp_today[j]='N'
                                                 break
@@ -323,8 +361,8 @@ function GamePage(){
                                                 elements[i].style.color = "white"
                                                 elements[i].style.transition = "background-color 0.7s ease"
                                                 elements[i].style.backgroundColor = '#49C2F2';
-                                                result[i]="gray"
-                                                dispatch(updateJamoState([temp_user[i],"gray"]))
+                                                result[i]="#49C2F2"
+                                                dispatch(updateJamoState([temp_user[i],"#49C2F2"]))
                                             }
                                         }
                                     }
