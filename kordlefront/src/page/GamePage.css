@@ -36,6 +36,7 @@
 .subButton{
     width: 60px;
     height: 30px;
+    text-align: center;
     display: block;
     margin: 20px auto;
     box-sizing: border-box;
@@ -87,7 +88,7 @@
 }
 
 /* 화면이 768px 이하일 때는 열을 한 개로 변경 (수직 배치) */
-@media (max-width: 1200px) {
+@media (max-width: 480px) {
     .container {
       grid-template-columns: 1fr; /* 1개의 열로 변경 */
       grid-template-rows: auto; /* 필요한 만큼 행이 생성됨 */
