@@ -51,7 +51,6 @@ function ModalContent(props){
 
     function nameHandler(event){
         setName(event.target.value)
-        console.log(name)
     }
 
     function saveName(state){

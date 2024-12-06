@@ -20,7 +20,7 @@ function AnswerBar(props){
     });
     const dispatch=useDispatch();
     const currentSelect = data.currentSelect
-    console.log(currentSelect)
+
     // 유효성 검사 코드 보류
     // const userAnswer=data.userWord
     // if(!(userAnswer.includes("")) && !isdisabled){  //단어 유효성 검사

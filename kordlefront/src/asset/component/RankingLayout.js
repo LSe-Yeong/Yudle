@@ -55,8 +55,6 @@ function RankingLayout(){
         })
       },[]);
 
-      console.log(users)
-
     return(
         <div className="rankingSet">
             <RankingComponent rankId={1} users={users}></RankingComponent>
