@@ -57,8 +57,8 @@ function ModalContent(props){
         Cookies.set("name",name,{expires: expirationTime})
         const userData={
             "name" : name,
-            "time" : Number(second),
-            "count" : Number(count),
+            "time" : Math.floor(second),
+            "count" : Math.floor(count),
             "score" : total,
             "isSolved" : state
         }
