@@ -152,8 +152,7 @@ src
     - 대부분 친구들이 게임을 스마트폰 기기를 이용하여 플레이한다.
     - 따라서 @media 를 이용하여 기기의 크기에 따라 컴포넌트, 블록들의 CSS 설정을 동적으로 변경하였다.
     - 아래는 모바일 기기에서 접속 했을 경우 화면이다.
-    <img src="readmeAsset/yudleMobile.jpg">
-
+    <img src="readmeAsset/yudleMobile.jpg"  style="width: 50%; height: auto; object-fit: contain;">
 <br>
 
 ## 👬 프로젝트 팀원 및 역할
