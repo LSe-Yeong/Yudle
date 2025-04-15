@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store  from './store/store';
 
+alert("2025.4.01 ~ 현재 AWS 프리티어 종료로 인해 정답 단어와 랭킹을 불러올 수 없습니다.")
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
    <Provider store={store}>
